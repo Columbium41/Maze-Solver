@@ -1,48 +1,99 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap');
 
+/* CSS VARIABLES */
 :root {
     --green-theme: rgb(80, 200, 30);
     --white-theme: rgb(220, 220, 220);
+    --black-theme: rgb(45, 45, 45);
 }
 
+/* STYLING AND FONTS FOR WEBPAGE */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;    
 }
-
 html {
     font-size: 20px;
     font-family: 'Open Sans', sans-serif;
+    color: var(--white-theme);
 }
 body {
-    background: rgb(45, 45, 45);
+    background: var(--black-theme);
 }
 
+/* GENERAL CLASSES */
+.container {
+    text-align: center;
+    width: 50%;
+    background: var(--white-theme);
+    color: var(--black-theme);
+}  
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* STYLING FOR NAVIGATION BAR */
 #navbar {
     display: flex;
     justify-content: space-between;
     padding: 10px 100px;
 }
-
 #title {
     font-size: 2rem;
     color: var(--green-theme);
 }
-
 .links {
     list-style: none;
     display: flex;
     align-items: center;
     gap: 75px;
 }
-
 .links li a {
     text-decoration: none;
-    color: var(--white-theme);
+    color: inherit;
     transition: color 0.3s;
 }
-
 .links li a:hover {
     color: var(--green-theme);
+}
+
+/* STYLING FOR OPTIONS MENU */
+#options-menu {
+    padding: 0 30px;
+    display: grid;
+    row-gap: 10px;
+    grid-template-columns: 50% 50%;
+    justify-items: start;
+    align-items: center;
+    font-size: 1.2rem;
+}
+#options-menu h2,
+#options-menu button {
+    grid-column: span 2;
+    justify-self: center;
+    margin: 20px 0;
+}
+#options-menu input,
+#options-menu button {
+    font-size: inherit;
+}
+#options-menu input {
+    max-width: 150px;
+}
+#create-maze-button {
+    padding: 6px 8px;
+    background: var(--green-theme);
+    border: 1px solid black;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+#create-maze-button:hover {
+    background: rgb(90, 220, 40);
+}
+#create-maze-button:active {
+    background: rgb(70, 160, 25);
 }
