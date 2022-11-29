@@ -64,6 +64,8 @@ body {
 /* STYLING FOR OPTIONS MENU */
 #options-menu {
     padding: 0 30px;
+
+    /* Display changes to none when out of menu */
     display: grid;
     row-gap: 10px;
     grid-template-columns: 50% 50%;
@@ -78,22 +80,44 @@ body {
     margin: 20px 0;
 }
 #options-menu input,
-#options-menu button {
+.button {
     font-size: inherit;
 }
 #options-menu input {
     max-width: 150px;
 }
-#create-maze-button {
+.button {
     padding: 6px 8px;
     background: var(--green-theme);
     border: 1px solid black;
     border-radius: 8px;
     transition: background 0.2s;
 }
-#create-maze-button:hover {
+.button:hover {
     background: rgb(90, 220, 40);
+    cursor: pointer;
 }
-#create-maze-button:active {
+.button:active {
     background: rgb(70, 160, 25);
+}
+
+/* STYLING FOR MAZE INTERFACE */
+#maze-interface {
+    display: none;
+    border: 1px solid red;
+    font-size: 15px;
+}
+#maze-menu {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 2px;
+    column-gap: 5px;
+
+    align-items: center;
+}
+#show-grid {
+    vertical-align: middle;
+}
+canvas {
+    border: 3px solid var(--white-theme);
 }
