@@ -12,27 +12,47 @@
 </head>
 <body>  
     <noscript>Sorry, your browser does not support JavaScript</noscript>
-    <div id="options-menu" class="container center">
-        <h2>Maze Options</h2>
-        <label for="rows-input">Number of Rows:</label>
-        <input type="number" value="12" id="rows-input">
-        <label for="columns-input">Number of Columns:</label>
-        <input type="number" value="12" id="columns-input">
-        <button class="button" id="create-maze-button" onclick="createMaze()">Create Maze</button>
-    </div>
-    <div id="maze-interface" class="center">
-        <div id="maze-menu">
-            <button class="button" id="home-button" onclick="toMenu()">Home</button>
-            <label for="show-grid">show grid:
-                <input type="checkbox" id="show-grid">
-            </label>
-            <button class="button" id="wall-button">Wall</button>
-            <button class="button" id="delete-button">Delete</button>
-            <button class="button" id="wormhole-button">Wormhole</button>
-            <button class="button" id="lpush-button">Left Block</button>
-            <button class="button" id="lpush-button">Right Block</button>
-            <button class="button" id="lpush-button">Up Block</button>
-            <button class="button" id="lpush-button">Down Block</button>
+    <div class="app">
+        <div id="maze-settings">
+            <div class="top-bar">
+                <h2>Maze Settings</h2>
+            </div>
+            <div id="maze-ui" class="col-flex">
+                <div class="ui-container col-flex">
+                    <h2>View</h2>
+                    <label for="show-grid">show grid lines:
+                        <input type="checkbox" class="checkbox" id="show-grid" onclick="getCheckbox()">
+                    </label>
+                    <label for="show-steps">show steps:
+                        <input type="checkbox" class="checkbox" id="show-steps" onclick="getCheckbox()">
+                    </label>
+                </div>
+                <div class="ui-container row-flex">
+                    <h2>Edit</h2>
+                    <button class="button" id="wall-button">Wall</button>
+                    <button class="button" id="start-button">Starting Block</button>
+                    <button class="button" id="dest-button">Destination Block</button>
+                    <button class="button" id="lpush-button">Left Block</button>
+                    <button class="button" id="lpush-button">Right Block</button>
+                    <button class="button" id="lpush-button">Up Block</button>
+                    <button class="button" id="lpush-button">Down Block</button>
+                    <button class="button" id="wormhole-button">Wormhole</button>
+                    <button class="button" id="delete-button">Delete</button>
+                    <label for="wormhole-id" id="wormhole-id-label">wormhole id:
+                        <input type="range" min="1" max="9" id="wormhole-id">
+                    </label>
+                </div>
+                <div class="ui-container col-flex">
+                    <h2>Configure</h2>
+                    <label for="solve-maze-select"></label>
+                    <select name="selected-algorithm" id="solve-maze-select">
+                        <option value="">--Select an Algorithm--</option>
+                        <option value="DFS">Depth First Search</option>
+                        <option value="BFS">Breadth First Search</option>
+                    </select>
+                    <button class="button" id="solve-button">Solve Maze</button>
+                </div>
+            </div>
         </div>
         <canvas id="canvas"></canvas>
     </div>

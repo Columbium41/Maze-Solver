@@ -5,6 +5,7 @@
     --green-theme: rgb(80, 200, 30);
     --white-theme: rgb(220, 220, 220);
     --black-theme: rgb(45, 45, 45);
+    --gray-theme: rgb(200, 200, 200);
 }
 
 /* STYLING AND FONTS FOR WEBPAGE */
@@ -20,27 +21,38 @@ html {
 }
 body {
     background: var(--black-theme);
+    height: 100vh;
 }
 
 /* GENERAL CLASSES */
-.container {
-    text-align: center;
-    width: 50%;
-    background: var(--white-theme);
-    color: var(--black-theme);
-}  
-.center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.button {
+    padding: 6px 8px;
+    background: var(--green-theme);
+    border: 1px solid black;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+.button:hover {
+    background: rgb(90, 220, 40);
+    cursor: pointer;
+}
+.button:active {
+    background: rgb(70, 160, 25);
+}
+.col-flex {
+    flex-direction: column;
+}
+.row-flex {
+    flex-direction: row;
 }
 
 /* STYLING FOR NAVIGATION BAR */
 #navbar {
     display: flex;
     justify-content: space-between;
-    padding: 10px 100px;
+    align-items: center;
+    padding: 0 100px;
+    height: 10vh;
 }
 #title {
     font-size: 2rem;
@@ -61,63 +73,53 @@ body {
     color: var(--green-theme);
 }
 
-/* STYLING FOR OPTIONS MENU */
-#options-menu {
-    padding: 0 30px;
-
-    /* Display changes to none when out of menu */
-    display: grid;
-    row-gap: 10px;
-    grid-template-columns: 50% 50%;
-    justify-items: start;
-    align-items: center;
-    font-size: 1.2rem;
-}
-#options-menu h2,
-#options-menu button {
-    grid-column: span 2;
-    justify-self: center;
-    margin: 20px 0;
-}
-#options-menu input,
-.button {
-    font-size: inherit;
-}
-#options-menu input {
-    max-width: 150px;
-}
-.button {
-    padding: 6px 8px;
-    background: var(--green-theme);
-    border: 1px solid black;
-    border-radius: 8px;
-    transition: background 0.2s;
-}
-.button:hover {
-    background: rgb(90, 220, 40);
-    cursor: pointer;
-}
-.button:active {
-    background: rgb(70, 160, 25);
-}
-
 /* STYLING FOR MAZE INTERFACE */
-#maze-interface {
-    display: none;
-    border: 1px solid red;
-    font-size: 15px;
+.app {
+    height: 90vh;
+    display: flex;
 }
-#maze-menu {
+#maze-settings {
+    width: 25%;
+    background: var(--gray-theme);
+    color: var(--black-theme);
+    text-align: center;
+}
+.top-bar {
+    background: var(--white-theme);
+    height: 8%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#maze-ui {
+    height: 92%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.ui-container {
     display: flex;
     flex-wrap: wrap;
-    row-gap: 2px;
-    column-gap: 5px;
-
-    align-items: center;
+    justify-content: center;
+    gap: 3px;
 }
-#show-grid {
+.ui-container h2 {
+    margin-bottom: 5px;
+}
+.row-flex h2,
+.row-flex #wormhole-id-label {
+    flex-basis: 100%;
+}
+.checkbox,
+#wormhole-id {
     vertical-align: middle;
+}
+select {
+    text-align: inherit;
+    padding: 3px 0;
 }
 canvas {
     border: 3px solid var(--white-theme);
+    width: 75%;
+    height: 100%;
 }
