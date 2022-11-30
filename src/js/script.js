@@ -188,7 +188,7 @@ function draw(r, c) {
         ctx.drawImage(Tile.tileImageDict[tile.type], x, y, gridSize, gridSize);
     }
     else if (tile.type === 0) {  // Empty Tile
-        if (tile.inPath) {  // Empty tile is part of path
+        if (tile.inPath) {  // Empty tile is a part of the path
             ctx.fillStyle = purple;
             ctx.fillRect(x, y, gridSize, gridSize);
         }
@@ -270,12 +270,14 @@ async function IterativeDFS() {
     const destinationTile = maze.getTile(2);
     var foundDestination = false;
 
+    // Add the start tile to the top of the stack
     startTile.checked = true;
     stack.push(startTile);
 
     // Loop while stack isn't empty and the destination has not been found
     while (stack.length > 0 && !foundDestination) {
 
+        // Get the tile at the top of the stack and check if it has been visited
         const currentTile = stack.pop();
         if (currentTile.visited) {
             continue;
@@ -292,13 +294,13 @@ async function IterativeDFS() {
         for (var i = 0; i < adjacentTiles.length; i++) {
             const adjTile = adjacentTiles[i];
 
-            if (!adjTile.checked) {
+            if (!adjTile.checked) {  // Tile hasn't been checked
                 adjTile.parentTile = currentTile;
 
-                if (adjTile.equals(destinationTile)) {  // Found Destination
+                if (adjTile.equals(destinationTile)) {  // Found the destination tile
                     foundDestination = true;
                 }
-                else {
+                else {  // Add tile to the top of the stack
                     adjTile.checked = true;
                     stack.push(adjTile);
                 }
@@ -309,7 +311,6 @@ async function IterativeDFS() {
                 }
             }
         }
-        
     }
 
     return foundDestination;
@@ -320,6 +321,11 @@ async function BFS() {
     
 }
 
+/**
+ * A function that reconstructs the path from the start to destination tile
+ * @param {Tile} start 
+ * @param {Tile} destination 
+ */
 function reconstructPath(start, destination) {
     var currentTile = destination;
     destination.inPath = true;
@@ -330,12 +336,19 @@ function reconstructPath(start, destination) {
     }
 }
 
+/**
+ * A function that disables all menu buttons
+ */
 function disableButtons() {
     const allButtons = document.getElementsByClassName('button');
     for (var i = 0; i < allButtons.length; i++) {
         allButtons[i].setAttribute('disabled', '');
     }
 }
+
+/**
+ * A function that enables all menu buttons
+ */
 function enableButtons() {
     const allButtons = document.getElementsByClassName('button');
     for (var i = 0; i < allButtons.length; i++) {
@@ -345,6 +358,11 @@ function enableButtons() {
     }
 }
 
+/**
+ * A function that sleeps for a specified amount of time
+ * @param {Number} ms The amount of time to sleep in milliseconds
+ * @returns {Promise} A promise object
+ */
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
