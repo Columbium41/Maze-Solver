@@ -87,6 +87,10 @@ canvas.addEventListener("mousemove", (e) => {
  * @param {PointerEvent} e The Click Event Information
  */
 function getEditMode(e) {
+    if (finishedAlgorithm) {
+        drawAll();
+        finishedAlgorithm = false;
+    }
     for (var i = 0; i < buttons.length; i++) {
         if (buttons[i].hasAttribute("data-active")) {
             buttons[i].removeAttribute("data-active");
@@ -276,9 +280,6 @@ async function IterativeDFS() {
             continue;
         }
         currentTile.visited = true;
-        if (currentTile.type === 8) {
-            console.log(maze.getAdjacent(currentTile.row, currentTile.column));
-        }
 
         if (showSteps) {
             draw(currentTile.row, currentTile.column);
@@ -311,7 +312,52 @@ async function IterativeDFS() {
 }
 
 async function IterativeBFS() {
-    
+    var queue = [];
+    const startTile = maze.getTile(1);
+    const destinationTile = maze.getTile(2);
+    var foundDestination = false;
+
+    // Add start tile to queue
+    startTile.checked = true;
+    queue.push(startTile);
+
+    while (queue.length > 0 && !foundDestination) {
+
+        const currentTile = queue.shift();
+        if (currentTile.visited) {
+            continue;
+        }
+        currentTile.visited = true;
+
+        if (showSteps) {
+            draw(currentTile.row, currentTile.column);
+            await sleep(sleepTimeMS * 0.75);
+        }
+
+        // Iterate through each adjacent tile
+        const adjacentTiles = maze.getAdjacent(currentTile.row, currentTile.column);
+        for (var i = 0; i < adjacentTiles.length; i++) {
+            const adjTile = adjacentTiles[i];
+
+            if (!adjTile.checked) {  // Tile hasn't been checked
+                adjTile.parentTile = currentTile;
+
+                if (adjTile.equals(destinationTile)) {  // Found the destination tile
+                    foundDestination = true;
+                }
+                else {  // Add tile to the end of the queue
+                    adjTile.checked = true;
+                    queue.push(adjTile);
+                }
+
+                if (showSteps) {
+                    draw(adjTile.row, adjTile.column);
+                }
+            }
+        }
+
+    }
+    return foundDestination;
 }
 
 /**
