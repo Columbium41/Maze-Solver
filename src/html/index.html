@@ -21,7 +21,7 @@
                 <div class="ui-container col-flex">
                     <h2>View</h2>
                     <label for="show-grid">show grid lines:
-                        <input type="checkbox" class="checkbox" id="show-grid">
+                        <input type="checkbox" class="checkbox" id="show-grid" checked>
                     </label>
                     <label for="show-steps">show steps:
                         <input type="checkbox" class="checkbox" id="show-steps">
@@ -36,7 +36,7 @@
                     <button class="button" id="lpush-button">Right Block</button>
                     <button class="button" id="lpush-button">Up Block</button>
                     <button class="button" id="lpush-button">Down Block</button>
-                    <button class="button" id="wormhole-button">Wormhole</button>
+                    <button class="button" id="wormhole-button" disabled>Wormhole</button>
                     <button class="button" id="delete-button">Delete</button>
                     <button class="button" id="delete-all-button">Delete All</button>
                     <label for="wormhole-id" id="wormhole-id-label">
@@ -49,7 +49,7 @@
                     <label for="solve-maze-select"></label>
                     <select name="selected-algorithm" id="solve-maze-select">
                         <option value="">--Select an Algorithm--</option>
-                        <option value="DFS">Depth First Search</option>
+                        <option value="I_DFS">Iterative Depth First Search</option>
                         <option value="BFS">Breadth First Search</option>
                     </select>
                     <button class="button" id="solve-button">Solve Maze</button>

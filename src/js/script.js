@@ -3,6 +3,11 @@ import Tile from "./tile.js";
 
 // COLORS
 const white = "rgb(220, 220, 220)";
+const green = "rgb(40, 190, 40)";
+const red = "rgb(190, 40, 40)";
+const orange = "rgb(210, 125, 30)";
+const yellow = "rgb(230, 200, 40)";
+const purple = "rgb(150, 15, 175)";
 
 // DOCUMENT ELEMENTS
 const canvasContainer = document.getElementById('canvas-container');
@@ -12,20 +17,25 @@ const showStepsCheckbox = document.getElementById('show-steps');
 const wormholeIdRange = document.getElementById('wormhole-id');
 const buttons = document.getElementsByClassName("button");
 const deleteAllButton = document.getElementById('delete-all-button');
+const solveMazeButton = document.getElementById('solve-button');
+const solveAlgorithmSelect = document.getElementById('solve-maze-select');
 
 // CANVAS
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 // MAZE VARIABLES
-var showGrid = false;
-var showSteps = false;
-var wormholeId = 1;
+var showGrid = gridLinesCheckbox.checked;
+var showSteps = showStepsCheckbox.checked;
+var wormholeId = wormholeIdRange.value;
 var editMode = "Wall";
 var mouseDown = false;
+var solveAlgorithm = solveAlgorithmSelect.value;
+var finishedAlgorithm = false;
 const gridSize = 30;
 const numRows = Math.floor((canvasContainer.clientHeight-10) / gridSize);
 const numColumns = Math.floor((canvasContainer.clientWidth-10) / gridSize);
+const sleepTimeMS = 15;
 
 canvas.width = gridSize * numColumns;
 canvas.height = gridSize * numRows;
@@ -43,12 +53,11 @@ for (var i = 0; i < buttons.length; i++) {
     }
 }
 deleteAllButton.addEventListener("click", () => {
-    for (var i = 0; i < maze.matrix.length; i++) {
-        for (var j = 0; j < maze.matrix[i].length; j++) {
-            maze.matrix[i][j].type = 0;
-        }
-    }
+    maze.clear();
     drawAll();
+});
+solveMazeButton.addEventListener("click", () => {
+    startSolve();
 });
 
 // Add event listeners to checkboxes
@@ -104,11 +113,17 @@ function editMaze(row, col) {
     if (row >= 0 && col >= 0 && row < numRows && col < numColumns) { 
         const typeNumber = Tile.tileTypeDict[editMode];
 
+        // Check if more than one start/destination tile is being placed
+        if ((typeNumber === 1 || typeNumber === 2) && maze.getNumTileType(typeNumber) > 0) {
+            return;
+        }
+
         // Check if the tile is empty or if the user wants to delete the tile
-        if (typeNumber === 0 || maze.matrix[row][col].type === 0) {
+        if (maze.matrix[row][col].type === 0 || typeNumber === 0) {
             maze.matrix[row][col].type = typeNumber;
-            if (typeNumber === 0) {
+            if (typeNumber === 0 || finishedAlgorithm) {
                 drawAll();
+                finishedAlgorithm = false;
             }
             else {
                 draw(row, col);
@@ -169,11 +184,170 @@ function draw(r, c) {
     const x = c * gridSize;
     const y = r * gridSize;
 
-    if (tile.type === 0) {  // Empty
-        ctx.clearRect(x, y, gridSize, gridSize);
+    if (tile.type in Tile.tileImageDict) {  // Push blocks
+        ctx.drawImage(Tile.tileImageDict[tile.type], x, y, gridSize, gridSize);
+    }
+    else if (tile.type === 0) {  // Empty Tile
+        if (tile.inPath) {  // Empty tile is part of path
+            ctx.fillStyle = purple;
+            ctx.fillRect(x, y, gridSize, gridSize);
+        }
+        else if (tile.visited && showSteps) {  // Empty tile has been visited
+            ctx.fillStyle = orange;
+            ctx.fillRect(x, y, gridSize, gridSize);
+        }
+        else if (tile.checked && showSteps) {  // Empty tile has been checked
+            ctx.fillStyle = yellow;
+            ctx.fillRect(x, y, gridSize, gridSize);
+        }
+        else { 
+            ctx.clearRect(x, y, gridSize, gridSize);
+        }
     }
     else if (tile.type === 3) {  // Wall
         ctx.fillStyle = white;
         ctx.fillRect(x, y, gridSize, gridSize);
     }
+    else if (tile.type === 1) {  // Start Block
+        ctx.fillStyle = green;
+        ctx.fillRect(x, y, gridSize, gridSize);
+    }
+    else if (tile.type === 2) {  // Destination Block
+        ctx.fillStyle = red;
+        ctx.fillRect(x, y, gridSize, gridSize);
+    }
 }
+
+/**
+ * A function that starts solving the maze based on the selected algorithm
+ */
+async function startSolve() {
+    // Check if maze contains start and destination tile
+    if (maze.getNumTileType(1) === 1 && maze.getNumTileType(2) === 1) {
+
+        drawAll();
+        disableButtons();
+        solveAlgorithm = solveAlgorithmSelect.value;
+        var solved;
+        switch (solveAlgorithm) {
+            case "I_DFS":
+                solved = await IterativeDFS();
+                break;
+            case "BFS":
+                solved = await BFS();
+                break;
+            case "":
+                alert("Please select an algorithm to solve the maze.");
+                break;
+        }
+
+        if (solved) {
+            const startTile = maze.getTile(1);
+            const destinationTile = maze.getTile(2);
+            reconstructPath(startTile, destinationTile);
+            drawAll();
+        }
+        else {
+            alert("Maze cannot be solved!");
+        }
+
+        finishedAlgorithm = true;
+        maze.resetTiles();
+        enableButtons();
+    }
+    else {
+        alert("Please put down a start and destination tile.");
+    }
+}
+
+/**
+ * A search function that implements iterative DFS
+ * @return {boolean} whether or not a path has been found
+ */
+async function IterativeDFS() {
+    var stack = [];
+    const startTile = maze.getTile(1);
+    const destinationTile = maze.getTile(2);
+    var foundDestination = false;
+
+    startTile.checked = true;
+    stack.push(startTile);
+
+    // Loop while stack isn't empty and the destination has not been found
+    while (stack.length > 0 && !foundDestination) {
+
+        const currentTile = stack.pop();
+        if (currentTile.visited) {
+            continue;
+        }
+        currentTile.visited = true;
+
+        if (showSteps) {
+            draw(currentTile.row, currentTile.column);
+            await sleep(sleepTimeMS);
+        }
+        
+        // Iterate through each adjacent tile
+        const adjacentTiles = maze.getAdjacent(currentTile.row, currentTile.column);
+        for (var i = 0; i < adjacentTiles.length; i++) {
+            const adjTile = adjacentTiles[i];
+
+            if (!adjTile.checked) {
+                adjTile.parentTile = currentTile;
+
+                if (adjTile.equals(destinationTile)) {  // Found Destination
+                    foundDestination = true;
+                }
+                else {
+                    adjTile.checked = true;
+                    stack.push(adjTile);
+                }
+
+                if (showSteps) {
+                    draw(adjTile.row, adjTile.column);
+                    await sleep(sleepTimeMS);
+                }
+            }
+        }
+        
+    }
+
+    return foundDestination;
+
+}
+
+async function BFS() {
+    
+}
+
+function reconstructPath(start, destination) {
+    var currentTile = destination;
+    destination.inPath = true;
+
+    while (!currentTile.equals(start)) {
+        currentTile = maze.matrix[currentTile.parentTile.row][currentTile.parentTile.column];
+        currentTile.inPath = true;
+    }
+}
+
+function disableButtons() {
+    const allButtons = document.getElementsByClassName('button');
+    for (var i = 0; i < allButtons.length; i++) {
+        allButtons[i].setAttribute('disabled', '');
+    }
+}
+function enableButtons() {
+    const allButtons = document.getElementsByClassName('button');
+    for (var i = 0; i < allButtons.length; i++) {
+        if (allButtons[i].id !== "wormhole-button") {
+            allButtons[i].removeAttribute('disabled');
+        }
+    }
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// Draw all contents
+drawAll();
