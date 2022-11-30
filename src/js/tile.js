@@ -1,7 +1,7 @@
 export default class Tile {
     static tileTypeDict = {
         "Delete": 0,
-        "Starting Block": 1,
+        "Start Block": 1,
         "Destination Block": 2,
         "Wall": 3,
         "Left Block": 4,

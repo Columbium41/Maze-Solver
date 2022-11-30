@@ -80,6 +80,10 @@ canvas.addEventListener("mousemove", (e) => {
     }
 });
 
+/**
+ * A function that updates the maze edit mode
+ * @param {PointerEvent} e The Click Event Information
+ */
 function getEditMode(e) {
     for (var i = 0; i < buttons.length; i++) {
         if (buttons[i].hasAttribute("data-active")) {
@@ -90,24 +94,44 @@ function getEditMode(e) {
     editMode = e.target.innerText;
 }
 
+/**
+ * A function that edits the maze's tile type at the specified row and column
+ * @param {Number} row The row to edit
+ * @param {Number} col The column to edit
+ */
 function editMaze(row, col) {
-    if (row >= 0 && col >= 0 && row < numRows && col < numColumns) {
-        maze.matrix[row][col].type = Tile.tileTypeDict[editMode];
-        //draw(row, col);
-        drawAll();
-    }
+    // Check if row and column are valid
+    if (row >= 0 && col >= 0 && row < numRows && col < numColumns) { 
+        const typeNumber = Tile.tileTypeDict[editMode];
+
+        // Check if the tile is empty or if the user wants to delete the tile
+        if (typeNumber === 0 || maze.matrix[row][col].type === 0) {
+            maze.matrix[row][col].type = typeNumber;
+            if (typeNumber === 0) {
+                drawAll();
+            }
+            else {
+                draw(row, col);
+            }
+        }
+    }   
 }
 
+/**
+ * A function that draws a grid on the canvas
+ */
 function drawGrids() {
     if (showGrid) {
         ctx.beginPath();
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 0.5;
         ctx.strokeStyle = white;
 
+        // Draw Rows
         for (var i = 1; i < numRows; i++) {
             ctx.moveTo(0, i * gridSize);
             ctx.lineTo(canvas.width, i * gridSize);
         }
+        // Draw Columns
         for (var i = 1; i < numColumns; i++) {
             ctx.moveTo(i * gridSize, 0);
             ctx.lineTo(i * gridSize, canvas.height);
@@ -115,27 +139,40 @@ function drawGrids() {
         ctx.stroke();
     }
 }
+
+/**
+ * A function that redraws everything on the canvas
+ */
 function drawAll() {
+    // Clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // Iterate through and draw each tile in the maze
     for (var i = 0; i < maze.matrix.length; i++) {
         for (var j = 0; j < maze.matrix[i].length; j++) {
             draw(i, j);
         }
     }
 
+    // Overlay the grid on top of the tiles
     drawGrids();
 }
+
+/**
+ * A function that redraws a tile at the specified row and column
+ * @param {Number} r 
+ * @param {Number} c 
+ */
 function draw(r, c) {
     const tile = maze.matrix[r][c];
 
     const x = c * gridSize;
     const y = r * gridSize;
 
-    if (tile.type === 0) {
+    if (tile.type === 0) {  // Empty
         ctx.clearRect(x, y, gridSize, gridSize);
     }
-    else if (tile.type === 3) {
+    else if (tile.type === 3) {  // Wall
         ctx.fillStyle = white;
         ctx.fillRect(x, y, gridSize, gridSize);
     }
