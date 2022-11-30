@@ -8,7 +8,6 @@ const red = "rgb(190, 40, 40)";
 const orange = "rgb(210, 125, 30)";
 const yellow = "rgb(230, 200, 40)";
 const purple = "rgb(150, 15, 175)";
-const blue = "rgb(0, 140, 255)";
 
 // DOCUMENT ELEMENTS
 const canvasContainer = document.getElementById('canvas-container');
@@ -19,6 +18,7 @@ const buttons = document.getElementsByClassName("button");
 const deleteAllButton = document.getElementById('delete-all-button');
 const solveMazeButton = document.getElementById('solve-button');
 const solveAlgorithmSelect = document.getElementById('solve-maze-select');
+const visualizationDelayRange = document.getElementById('visualize-delay-input');
 
 // CANVAS
 const canvas = document.getElementById('canvas');
@@ -27,14 +27,14 @@ const ctx = canvas.getContext('2d');
 // MAZE VARIABLES
 var showGrid = gridLinesCheckbox.checked;
 var showSteps = visualizeStepsCheckbox.checked;
-var editMode = "Wall";
+var editMode = "Start Block";
 var mouseDown = false;
 var solveAlgorithm = solveAlgorithmSelect.value;
 var finishedAlgorithm = false;
 const gridSize = 30;
 const numRows = Math.floor((canvasContainer.clientHeight-10) / gridSize);
 const numColumns = Math.floor((canvasContainer.clientWidth-10) / gridSize);
-const sleepTimeMS = 40;
+var sleepTimeMS = visualizationDelayRange.value;
 
 canvas.width = gridSize * numColumns;
 canvas.height = gridSize * numRows;
@@ -58,6 +58,12 @@ deleteAllButton.addEventListener("click", () => {
 solveMazeButton.addEventListener("click", () => {
     startSolve();
 });
+
+// Add event listeners to range input
+visualizationDelayRange.oninput = () => {
+    sleepTimeMS = visualizationDelayRange.value;
+    visualizationDelayRange.previousSibling.previousSibling.innerText = `Delay: (${sleepTimeMS}ms)`;
+};
 
 // Add event listeners to checkboxes
 gridLinesCheckbox.addEventListener("click", () => {
@@ -223,7 +229,7 @@ async function startSolve() {
     if (maze.getNumTileType(1) === 1 && maze.getNumTileType(2) === 1) {
 
         drawAll();
-        disableButtons();
+        disableMenu();
         solveAlgorithm = solveAlgorithmSelect.value;
         var solved;
         switch (solveAlgorithm) {
@@ -232,9 +238,6 @@ async function startSolve() {
                 break;
             case "I_BFS":
                 solved = await IterativeBFS();
-                break;
-            case "":
-                alert("Please select an algorithm to solve the maze.");
                 break;
         }
 
@@ -250,7 +253,7 @@ async function startSolve() {
 
         finishedAlgorithm = true;
         maze.resetTiles();
-        enableButtons();
+        enableMenu();
     }
     else {
         alert("Please put down a start and destination tile.");
@@ -331,7 +334,7 @@ async function IterativeBFS() {
 
         if (showSteps) {
             draw(currentTile.row, currentTile.column);
-            await sleep(sleepTimeMS * 0.75);
+            await sleep(sleepTimeMS);
         }
 
         // Iterate through each adjacent tile
@@ -378,21 +381,29 @@ function reconstructPath(start, destination) {
 /**
  * A function that disables all menu buttons
  */
-function disableButtons() {
+function enableMenu() {
     const allButtons = document.getElementsByClassName('button');
     for (var i = 0; i < allButtons.length; i++) {
-        allButtons[i].setAttribute('disabled', '');
+        allButtons[i].removeAttribute('disabled');
     }
+    solveAlgorithmSelect.removeAttribute('disabled');
+    visualizationDelayRange.removeAttribute('disabled');
+    gridLinesCheckbox.removeAttribute('disabled');
+    visualizeStepsCheckbox.removeAttribute('disabled');
 }
 
 /**
  * A function that enables all menu buttons
  */
-function enableButtons() {
+function disableMenu() {
     const allButtons = document.getElementsByClassName('button');
     for (var i = 0; i < allButtons.length; i++) {
-        allButtons[i].removeAttribute('disabled');
+        allButtons[i].setAttribute('disabled', '');
     }
+    solveAlgorithmSelect.setAttribute('disabled', '');
+    visualizationDelayRange.setAttribute('disabled', '');
+    gridLinesCheckbox.setAttribute('disabled', '');
+    visualizeStepsCheckbox.setAttribute('disabled', '');
 }
 
 /**

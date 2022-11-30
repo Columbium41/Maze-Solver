@@ -8,3 +8,4 @@ A website made with HTML, CSS, and vanilla JS that allows users to build mazes a
 - Basics of JavaScript async functions
 - Vanilla JavaScript Modules
 - Iterative Depth-First Search
+- Iterative Breadth-First-Search

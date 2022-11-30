@@ -112,7 +112,8 @@ body {
 .row-flex h2 {
     flex-basis: 100%;
 }
-.checkbox {
+.checkbox,
+#visualize-delay-input {
     vertical-align: middle;
 }
 article {
