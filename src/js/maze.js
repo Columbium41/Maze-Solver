@@ -66,9 +66,6 @@ export default class Maze {
             else if (tile.type === 7 && this.tileValid(r + 1, c)) {  // down push
                 adjacentTiles.push(this.matrix[r + 1][c]);
             }
-            else if (tile.type === 8) {  // TODO: wormhole
-                
-            }
 
             else if (tile.type === 0 || tile.type == 1) {  // empty tile or start tile
                 if (this.tileValid(r, c - 1)) {

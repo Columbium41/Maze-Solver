@@ -109,12 +109,10 @@ body {
 .ui-container h2 {
     margin-bottom: 5px;
 }
-.row-flex h2,
-.row-flex #wormhole-id-label {
+.row-flex h2 {
     flex-basis: 100%;
 }
-.checkbox,
-#wormhole-id {
+.checkbox {
     vertical-align: middle;
 }
 article {

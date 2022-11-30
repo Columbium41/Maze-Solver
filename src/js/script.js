@@ -8,13 +8,13 @@ const red = "rgb(190, 40, 40)";
 const orange = "rgb(210, 125, 30)";
 const yellow = "rgb(230, 200, 40)";
 const purple = "rgb(150, 15, 175)";
+const blue = "rgb(0, 140, 255)";
 
 // DOCUMENT ELEMENTS
 const canvasContainer = document.getElementById('canvas-container');
 
 const gridLinesCheckbox = document.getElementById('show-grid');
 const visualizeStepsCheckbox = document.getElementById('visualize-steps');
-const wormholeIdRange = document.getElementById('wormhole-id');
 const buttons = document.getElementsByClassName("button");
 const deleteAllButton = document.getElementById('delete-all-button');
 const solveMazeButton = document.getElementById('solve-button');
@@ -27,7 +27,6 @@ const ctx = canvas.getContext('2d');
 // MAZE VARIABLES
 var showGrid = gridLinesCheckbox.checked;
 var showSteps = visualizeStepsCheckbox.checked;
-var wormholeId = wormholeIdRange.value;
 var editMode = "Wall";
 var mouseDown = false;
 var solveAlgorithm = solveAlgorithmSelect.value;
@@ -68,12 +67,6 @@ gridLinesCheckbox.addEventListener("click", () => {
 visualizeStepsCheckbox.addEventListener("click", () => {
     showSteps = visualizeStepsCheckbox.checked;
 });
-
-// Update range input everytime it changes
-wormholeIdRange.oninput = () => {
-    wormholeId = wormholeIdRange.value;
-    wormholeIdRange.previousSibling.previousSibling.innerText = `wormhole id (${wormholeId}):`;
-};
 
 // Add event listeners to canvas
 canvas.addEventListener("mousedown", (e) => {
@@ -233,8 +226,8 @@ async function startSolve() {
             case "I_DFS":
                 solved = await IterativeDFS();
                 break;
-            case "BFS":
-                solved = await BFS();
+            case "I_BFS":
+                solved = await IterativeBFS();
                 break;
             case "":
                 alert("Please select an algorithm to solve the maze.");
@@ -283,6 +276,9 @@ async function IterativeDFS() {
             continue;
         }
         currentTile.visited = true;
+        if (currentTile.type === 8) {
+            console.log(maze.getAdjacent(currentTile.row, currentTile.column));
+        }
 
         if (showSteps) {
             draw(currentTile.row, currentTile.column);
@@ -311,12 +307,10 @@ async function IterativeDFS() {
             }
         }
     }
-
     return foundDestination;
-
 }
 
-async function BFS() {
+async function IterativeBFS() {
     
 }
 
@@ -351,9 +345,7 @@ function disableButtons() {
 function enableButtons() {
     const allButtons = document.getElementsByClassName('button');
     for (var i = 0; i < allButtons.length; i++) {
-        if (allButtons[i].id !== "wormhole-button") {
-            allButtons[i].removeAttribute('disabled');
-        }
+        allButtons[i].removeAttribute('disabled');
     }
 }
 

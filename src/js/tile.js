@@ -16,8 +16,7 @@ export default class Tile {
         "Left Block": 4,
         "Right Block": 5,
         "Up Block": 6,
-        "Down Block": 7,
-        "Wormhole": 8
+        "Down Block": 7
     };
 
     static tileImageDict = {
