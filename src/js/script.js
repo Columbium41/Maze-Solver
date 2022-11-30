@@ -13,7 +13,7 @@ const purple = "rgb(150, 15, 175)";
 const canvasContainer = document.getElementById('canvas-container');
 
 const gridLinesCheckbox = document.getElementById('show-grid');
-const showStepsCheckbox = document.getElementById('show-steps');
+const visualizeStepsCheckbox = document.getElementById('visualize-steps');
 const wormholeIdRange = document.getElementById('wormhole-id');
 const buttons = document.getElementsByClassName("button");
 const deleteAllButton = document.getElementById('delete-all-button');
@@ -26,7 +26,7 @@ const ctx = canvas.getContext('2d');
 
 // MAZE VARIABLES
 var showGrid = gridLinesCheckbox.checked;
-var showSteps = showStepsCheckbox.checked;
+var showSteps = visualizeStepsCheckbox.checked;
 var wormholeId = wormholeIdRange.value;
 var editMode = "Wall";
 var mouseDown = false;
@@ -35,7 +35,7 @@ var finishedAlgorithm = false;
 const gridSize = 30;
 const numRows = Math.floor((canvasContainer.clientHeight-10) / gridSize);
 const numColumns = Math.floor((canvasContainer.clientWidth-10) / gridSize);
-const sleepTimeMS = 15;
+const sleepTimeMS = 40;
 
 canvas.width = gridSize * numColumns;
 canvas.height = gridSize * numRows;
@@ -65,8 +65,8 @@ gridLinesCheckbox.addEventListener("click", () => {
     showGrid = gridLinesCheckbox.checked;
     drawAll();
 });
-showStepsCheckbox.addEventListener("click", () => {
-    showSteps = showStepsCheckbox.checked;
+visualizeStepsCheckbox.addEventListener("click", () => {
+    showSteps = visualizeStepsCheckbox.checked;
 });
 
 // Update range input everytime it changes
@@ -307,7 +307,6 @@ async function IterativeDFS() {
 
                 if (showSteps) {
                     draw(adjTile.row, adjTile.column);
-                    await sleep(sleepTimeMS);
                 }
             }
         }
