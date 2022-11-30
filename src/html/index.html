@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" href="/src/css/styles.css">
     <script src="/src/js/header.js" defer></script>
-    <script src="/src/js/script.js" defer></script>
+    <script type="module" src="/src/js/script.js" defer></script>
     <title>Maze Solver</title>
 </head>
 <body>  
@@ -21,10 +21,10 @@
                 <div class="ui-container col-flex">
                     <h2>View</h2>
                     <label for="show-grid">show grid lines:
-                        <input type="checkbox" class="checkbox" id="show-grid" onclick="getCheckbox()">
+                        <input type="checkbox" class="checkbox" id="show-grid">
                     </label>
                     <label for="show-steps">show steps:
-                        <input type="checkbox" class="checkbox" id="show-steps" onclick="getCheckbox()">
+                        <input type="checkbox" class="checkbox" id="show-steps">
                     </label>
                 </div>
                 <div class="ui-container row-flex">
@@ -38,9 +38,10 @@
                     <button class="button" id="lpush-button">Down Block</button>
                     <button class="button" id="wormhole-button">Wormhole</button>
                     <button class="button" id="delete-button">Delete</button>
+                    <button class="button" id="delete-all-button">Delete All</button>
                     <label for="wormhole-id" id="wormhole-id-label">
                         <article>wormhole id (1):</article>
-                        <input type="range" value="1" min="1" max="9" id="wormhole-id" oninput="getWormholeId()">
+                        <input type="range" value="1" min="1" max="9" id="wormhole-id">
                     </label>
                 </div>
                 <div class="ui-container col-flex">
