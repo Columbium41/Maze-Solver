@@ -29,7 +29,7 @@
                 </div>
                 <div class="ui-container row-flex">
                     <h2>Edit</h2>
-                    <button class="button" id="wall-button">Wall</button>
+                    <button class="button" id="wall-button" data-active>Wall</button>
                     <button class="button" id="start-button">Starting Block</button>
                     <button class="button" id="dest-button">Destination Block</button>
                     <button class="button" id="lpush-button">Left Block</button>
@@ -38,8 +38,9 @@
                     <button class="button" id="lpush-button">Down Block</button>
                     <button class="button" id="wormhole-button">Wormhole</button>
                     <button class="button" id="delete-button">Delete</button>
-                    <label for="wormhole-id" id="wormhole-id-label">wormhole id:
-                        <input type="range" min="1" max="9" id="wormhole-id">
+                    <label for="wormhole-id" id="wormhole-id-label">
+                        <article>wormhole id (1):</article>
+                        <input type="range" value="1" min="1" max="9" id="wormhole-id" oninput="getWormholeId()">
                     </label>
                 </div>
                 <div class="ui-container col-flex">
@@ -54,7 +55,11 @@
                 </div>
             </div>
         </div>
-        <canvas id="canvas"></canvas>
+        <div id="canvas-container">
+            <canvas id="canvas">
+                Canvas is not supported in your browser.
+            </canvas>
+        </div>
     </div>
 </body>
 </html>

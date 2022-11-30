@@ -4,7 +4,7 @@
 :root {
     --green-theme: rgb(80, 200, 30);
     --white-theme: rgb(220, 220, 220);
-    --black-theme: rgb(45, 45, 45);
+    --black-theme: rgb(40, 40, 40);
     --gray-theme: rgb(200, 200, 200);
 }
 
@@ -38,6 +38,9 @@ body {
 }
 .button:active {
     background: rgb(70, 160, 25);
+}
+.button[data-active] {
+    border: 2px solid red;
 }
 .col-flex {
     flex-direction: column;
@@ -114,12 +117,21 @@ body {
 #wormhole-id {
     vertical-align: middle;
 }
+article {
+    display: inline;
+}
 select {
     text-align: inherit;
     padding: 3px 0;
 }
-canvas {
-    border: 3px solid var(--white-theme);
+#canvas-container {
     width: 75%;
     height: 100%;
+}
+canvas {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 3px solid var(--white-theme);
 }
