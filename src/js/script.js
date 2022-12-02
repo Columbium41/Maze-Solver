@@ -228,22 +228,26 @@ async function startSolve() {
     // Check if maze contains start and destination tile
     if (maze.getNumTileType(1) === 1 && maze.getNumTileType(2) === 1) {
 
+        const startTile = maze.getTile(1);
+        const destinationTile = maze.getTile(2);
+
         drawAll();
         disableMenu();
         solveAlgorithm = solveAlgorithmSelect.value;
         var solved;
         switch (solveAlgorithm) {
             case "I_DFS":
-                solved = await IterativeDFS();
+                solved = await IterativeDFS(startTile, destinationTile);
                 break;
             case "I_BFS":
-                solved = await IterativeBFS();
+                solved = await IterativeBFS(startTile, destinationTile);
+                break;
+            case "R_DFS":
+                solved = await RecursiveDFS(startTile, destinationTile);
                 break;
         }
 
         if (solved) {
-            const startTile = maze.getTile(1);
-            const destinationTile = maze.getTile(2);
             reconstructPath(startTile, destinationTile);
             drawAll();
         }
@@ -264,10 +268,8 @@ async function startSolve() {
  * A search function that implements iterative DFS
  * @return {boolean} whether or not a path has been found
  */
-async function IterativeDFS() {
+async function IterativeDFS(startTile, destinationTile) {
     var stack = [];
-    const startTile = maze.getTile(1);
-    const destinationTile = maze.getTile(2);
     var foundDestination = false;
 
     // Add the start tile to the top of the stack
@@ -290,7 +292,7 @@ async function IterativeDFS() {
         }
         
         // Iterate through each adjacent tile
-        const adjacentTiles = maze.getAdjacent(currentTile.row, currentTile.column);
+        const adjacentTiles = maze.getAdjacent(currentTile);
         for (var i = 0; i < adjacentTiles.length; i++) {
             const adjTile = adjacentTiles[i];
 
@@ -314,10 +316,37 @@ async function IterativeDFS() {
     return foundDestination;
 }
 
-async function IterativeBFS() {
+async function RecursiveDFS(currentTile, destinationTile) {
+
+    currentTile.visited = true;
+    if (currentTile.equals(destinationTile)) {  // Destination tile found
+        return true;
+    }
+
+    if (showSteps) {
+        draw(currentTile.row, currentTile.column);
+        await sleep(sleepTimeMS);
+    }
+
+    // Iterate through each adjacent tile
+    const adjacentTiles = maze.getAdjacent(currentTile);
+    for (var i = 0; i < adjacentTiles.length; i++) {
+        const adjTile = adjacentTiles[i];
+
+        if (!adjTile.visited) {
+            adjTile.parentTile = currentTile;
+            if (await RecursiveDFS(adjTile, destinationTile)) {
+                return true;
+            }
+        } 
+    }
+
+    return false;
+
+} 
+
+async function IterativeBFS(startTile, destinationTile) {
     var queue = [];
-    const startTile = maze.getTile(1);
-    const destinationTile = maze.getTile(2);
     var foundDestination = false;
 
     // Add start tile to queue
@@ -338,7 +367,7 @@ async function IterativeBFS() {
         }
 
         // Iterate through each adjacent tile
-        const adjacentTiles = maze.getAdjacent(currentTile.row, currentTile.column);
+        const adjacentTiles = maze.getAdjacent(currentTile);
         for (var i = 0; i < adjacentTiles.length; i++) {
             const adjTile = adjacentTiles[i];
 

@@ -34,6 +34,7 @@ export default class Tile {
         this.checked = false;
         this.visited = false;
         this.inPath = false;
+        this.distance = Number.MAX_SAFE_INTEGER;
         this.parentTile = null;
     }
     

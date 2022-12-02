@@ -43,11 +43,12 @@ export default class Maze {
 
     /**
      * A method that returns an array of adjacent tiles given a row and column
-     * @param {Number} r The row of the tile
-     * @param {Number} c The column of the tile
+     * @param {Tile} tile A Tile in the maze
      * @returns {Array} An array of adjacent tiles
      */
-    getAdjacent(r, c) {
+    getAdjacent(tile) {
+        const r = tile.row;
+        const c = tile.column;
         var adjacentTiles = [];
 
         // Check if the current tile is valid
@@ -118,6 +119,7 @@ export default class Maze {
                 this.matrix[i][j].checked = false;
                 this.matrix[i][j].visited = false;
                 this.matrix[i][j].inPath = false;
+                this.matrix[i][j].distance = Number.MAX_SAFE_INTEGER;
                 this.matrix[i][j].parentTile = null;
             }
         }
