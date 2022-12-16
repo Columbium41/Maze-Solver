@@ -1,5 +1,9 @@
 import Maze from "./maze.js";
 import Tile from "./tile.js";
+import IterativeDFS from "./iterative_dfs.js";
+import IterativeBFS from "./iterative_bfs.js";
+import RecursiveDFS from "./recursive_dfs.js";
+import RandomPrim from "./randomized-prim.js";
 
 // COLORS
 const white = "rgb(220, 220, 220)";
@@ -241,13 +245,13 @@ async function startSolve() {
         var solved;
         switch (solveAlgorithm) {
             case "I_DFS":
-                solved = await IterativeDFS(startTile, destinationTile);
+                solved = await IterativeDFS(maze, showSteps, startTile, destinationTile, sleepTimeMS);
                 break;
             case "I_BFS":
-                solved = await IterativeBFS(startTile, destinationTile);
+                solved = await IterativeBFS(maze, showSteps, startTile, destinationTile, sleepTimeMS);
                 break;
             case "R_DFS":
-                solved = await RecursiveDFS(startTile, destinationTile);
+                solved = await RecursiveDFS(maze, showSteps, startTile, destinationTile, sleepTimeMS);
                 break;
         }
 
@@ -280,150 +284,13 @@ async function startGenerate() {
 
     switch(generateAlgorithm) {
         case "random-prim":
-            await RandomPrim();
+            await RandomPrim(maze, showSteps, sleepTimeMS);
             break;
     }
 
     maze.resetTiles();
     drawAll();
     enableMenu();
-}
-
-/**
- * A search function that implements iterative DFS
- * @param {Tile} startTile the starting tile in the maze
- * @param {Tile} destinationTile the destination tile in the maze
- * @return {boolean} whether or not a path has been found
- */
-async function IterativeDFS(startTile, destinationTile) {
-    var stack = [];
-    var foundDestination = false;
-
-    // Add the start tile to the top of the stack
-    startTile.checked = true;
-    stack.push(startTile);
-
-    // Loop while stack isn't empty and the destination has not been found
-    while (stack.length > 0 && !foundDestination) {
-
-        // Get the tile at the top of the stack and check if it has been visited
-        const currentTile = stack.pop();
-        if (currentTile.visited) {
-            continue;
-        }
-        currentTile.visited = true;
-
-        if (showSteps) {
-            draw(currentTile.row, currentTile.column);
-            await sleep(sleepTimeMS);
-        }
-        
-        // Iterate through each adjacent tile
-        const adjacentTiles = maze.getAdjacent(currentTile);
-        for (const adjTile of adjacentTiles) {
-            if (!adjTile.checked && adjTile.type !== 3) {  // Tile hasn't been checked
-                adjTile.parentTile = currentTile;
-
-                if (adjTile.equals(destinationTile)) {  // Found the destination tile
-                    foundDestination = true;
-                }
-                else {  // Add tile to the top of the stack
-                    adjTile.checked = true;
-                    stack.push(adjTile);
-                }
-
-                if (showSteps) {
-                    draw(adjTile.row, adjTile.column);
-                }
-            }
-        }
-    }
-    return foundDestination;
-}
-
-/**
- * A search function that implements recursive DFS
- * @param {Tile} startTile the starting tile in the maze
- * @param {Tile} destinationTile the destination tile in the maze
- * @return {boolean} whether or not a path has been found
- */
-async function RecursiveDFS(currentTile, destinationTile) {
-
-    currentTile.visited = true;
-    if (currentTile.equals(destinationTile)) {  // Destination tile found
-        return true;
-    }
-
-    if (showSteps) {
-        draw(currentTile.row, currentTile.column);
-        await sleep(sleepTimeMS);
-    }
-
-    // Iterate through each adjacent tile
-    const adjacentTiles = maze.getAdjacent(currentTile);
-    for (const adjTile of adjacentTiles) {
-        if (!adjTile.visited && adjTile.type !== 3) {
-            adjTile.parentTile = currentTile;
-            const foundDestinationCallback = await RecursiveDFS(adjTile, destinationTile)
-            if (foundDestinationCallback) {
-                return true;
-            }
-        } 
-    }
-
-    return false;
-
-} 
-
-/**
- * A search function that implements iterative BFS
- * @param {Tile} startTile the starting tile in the maze
- * @param {Tile} destinationTile the destination tile in the maze
- * @return {boolean} whether or not a path has been found
- */
-async function IterativeBFS(startTile, destinationTile) {
-    var queue = [];
-    var foundDestination = false;
-
-    // Add start tile to queue
-    startTile.checked = true;
-    queue.push(startTile);
-
-    while (queue.length > 0 && !foundDestination) {
-
-        const currentTile = queue.shift();
-        if (currentTile.visited) {
-            continue;
-        }
-        currentTile.visited = true;
-
-        if (showSteps) {
-            draw(currentTile.row, currentTile.column);
-            await sleep(sleepTimeMS);
-        }
-
-        // Iterate through each adjacent tile
-        const adjacentTiles = maze.getAdjacent(currentTile);
-        for (const adjTile of adjacentTiles) {
-            if (!adjTile.checked && adjTile.type !== 3) {  // Tile hasn't been checked
-                adjTile.parentTile = currentTile;
-
-                if (adjTile.equals(destinationTile)) {  // Found the destination tile
-                    foundDestination = true;
-                }
-                else {  // Add tile to the end of the queue
-                    adjTile.checked = true;
-                    queue.push(adjTile);
-                }
-
-                if (showSteps) {
-                    draw(adjTile.row, adjTile.column);
-                }
-            }
-        }
-
-    }
-    return foundDestination;
 }
 
 /**
@@ -472,76 +339,7 @@ function disableMenu() {
 }
 
 /**
- * A function that generates a maze using randomized prim's algorithm
- */
-async function RandomPrim() {
-    var tileList = [];
-
-    // fill all cells with walls
-    for (var i = 0; i < maze.matrix.length; i++) {
-        for (var j = 0; j < maze.matrix[i].length; j++) {
-            maze.matrix[i][j].type = 3;
-        }
-    }
-
-    // Pick a random tile and mark it as part of the maze
-    const randomRow = Math.floor(Math.random() * maze.rows);
-    const randomCol = Math.floor(Math.random() * maze.columns);
-    const randomTile = maze.matrix[randomRow][randomCol];
-    randomTile.type = 0;
-    randomTile.checked = true;
-    randomTile.visited = true;
-    
-    // Add the adjacent tiles to the tile list
-    for (const adjTile of maze.getAdjacent(randomTile)) {
-        adjTile.checked = true;
-        tileList.push(adjTile);
-    }
-
-    if (showSteps) {
-        drawAll();
-    }
-
-    while (tileList.length > 0) {
-
-        // Pick a random element and remove it
-        const randomIndex = Math.floor(Math.random() * tileList.length);
-        const tile = tileList.splice(randomIndex, 1)[0];
-        tile.visited = true;
-
-        // Get the number of empty tiles around the tile
-        tile.type = 0;
-        var numEmptyTiles = 0;
-        const adjacentTiles = maze.getAdjacent(tile);
-        for (const adjTile of adjacentTiles) {
-            if (adjTile.type === 0) {
-                numEmptyTiles++;
-            }
-        }
-        tile.type = 3;
-
-        // Add adjacent tiles to the list if the number of adjacent empty tiles is 1
-        if (numEmptyTiles === 1) {
-            tile.type = 0;
-            for (const adjTile of adjacentTiles) {
-                if (!adjTile.checked) {
-                    adjTile.checked = true;
-                    tileList.push(adjTile);
-                }
-            }
-        }
-
-        if (showSteps) {
-            draw(tile.row, tile.column);
-            await sleep(sleepTimeMS);
-        }
-
-    }
-
-}
-
-/**
- * A function that sleeps for a specified amount of time
+ * A function that waits a specified amount of time and returns a promise afterwards
  * @param {Number} ms The amount of time to sleep in milliseconds
  * @returns {Promise} A promise object
  */
@@ -551,3 +349,5 @@ function sleep(ms) {
 
 // Draw all contents
 drawAll();
+
+export { sleep, draw, drawAll };

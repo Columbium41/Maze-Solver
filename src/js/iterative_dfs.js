@@ -1,0 +1,56 @@
+import { sleep, draw } from "./script.js";
+
+/**
+ * A search function that implements iterative DFS
+ * @param {Maze} maze the maze the search
+ * @param {boolean} showSteps whether to show the steps in the maze solving
+ * @param {Tile} startTile the starting tile in the maze
+ * @param {Tile} destinationTile the destination tile in the maze
+ * @param {Number} sleepTimeMS how long to animate each step in milliseconds 
+ * @return {boolean} whether or not a path has been found
+ */
+export default async function IterativeDFS(maze, showSteps, startTile, destinationTile, sleepTimeMS) {
+    var stack = [];
+
+    // Add the start tile to the top of the stack
+    startTile.checked = true;
+    stack.push(startTile);
+
+    // Loop while stack isn't empty and the destination has not been found
+    while (stack.length > 0) {
+
+        // Get the tile at the top of the stack and check if it has been visited
+        const currentTile = stack.pop();
+        if (currentTile.visited) {
+            continue;  // Skip tile if it has already been visited
+        }
+        currentTile.visited = true;
+
+        if (showSteps) {
+            draw(currentTile.row, currentTile.column);
+            await sleep(sleepTimeMS);
+        }
+        
+        // Iterate through each adjacent tile
+        const adjacentTiles = maze.getAdjacent(currentTile);
+        for (const adjTile of adjacentTiles) {
+            if (!adjTile.checked && adjTile.type !== 3) {  // Tile hasn't been checked
+                adjTile.parentTile = currentTile;
+
+                if (adjTile.equals(destinationTile)) {  // Found the destination tile
+                    return true;
+                }
+                else {  // Add tile to the top of the stack
+                    adjTile.checked = true;
+                    stack.push(adjTile);
+                }
+
+                if (showSteps) {
+                    draw(adjTile.row, adjTile.column);
+                }
+            }
+        }
+    }
+
+    return false;
+}
