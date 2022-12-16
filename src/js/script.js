@@ -256,7 +256,7 @@ async function startSolve() {
         }
 
         if (solved) {
-            reconstructPath(startTile, destinationTile);
+            await reconstructPath(startTile, destinationTile);
             drawAll();
         }
         else {
@@ -298,13 +298,22 @@ async function startGenerate() {
  * @param {Tile} start 
  * @param {Tile} destination 
  */
-function reconstructPath(start, destination) {
+async function reconstructPath(start, destination) {
     var currentTile = destination;
     destination.inPath = true;
+    if (showSteps) {
+        draw(currentTile.row, currentTile.column);
+        await sleep(sleepTimeMS);
+    }
 
     while (!currentTile.equals(start)) {
         currentTile = maze.matrix[currentTile.parentTile.row][currentTile.parentTile.column];
         currentTile.inPath = true;
+
+        if (showSteps) {
+            draw(currentTile.row, currentTile.column);
+            await sleep(sleepTimeMS);
+        }
     }
 }
 
