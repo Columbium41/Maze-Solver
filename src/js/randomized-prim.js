@@ -61,11 +61,11 @@ export default async function RandomPrim(maze, showSteps, sleepTimeMS) {
                     tileList.push(adjTile);
                 }
             }
-        }
-
-        if (showSteps) {
-            draw(tile.row, tile.column);
-            await sleep(sleepTimeMS);
+            
+            if (showSteps) {
+                draw(tile.row, tile.column);
+                await sleep(sleepTimeMS);
+            }
         }
 
     }
