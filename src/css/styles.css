@@ -40,7 +40,7 @@ body {
     background: rgb(70, 160, 25);
 }
 .button[data-active] {
-    border: 2px solid red;
+    border: 1.5px solid red;
 }
 .col-flex {
     flex-direction: column;

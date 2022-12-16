@@ -18,6 +18,8 @@ const buttons = document.getElementsByClassName("button");
 const deleteAllButton = document.getElementById('delete-all-button');
 const solveMazeButton = document.getElementById('solve-button');
 const solveAlgorithmSelect = document.getElementById('solve-maze-select');
+const generateMazeButton = document.getElementById('generate-button');
+const generateAlgorithmSelect = document.getElementById('generate-maze-select');
 const visualizationDelayRange = document.getElementById('visualize-delay-input');
 
 // CANVAS
@@ -29,9 +31,8 @@ var showGrid = gridLinesCheckbox.checked;
 var showSteps = visualizeStepsCheckbox.checked;
 var editMode = "Start Block";
 var mouseDown = false;
-var solveAlgorithm = solveAlgorithmSelect.value;
 var finishedAlgorithm = false;
-const gridSize = 30;
+const gridSize = 25;
 const numRows = Math.floor((canvasContainer.clientHeight-10) / gridSize);
 const numColumns = Math.floor((canvasContainer.clientWidth-10) / gridSize);
 var sleepTimeMS = visualizationDelayRange.value;
@@ -45,7 +46,7 @@ var maze = new Maze(numRows, numColumns);
 
 // Add event listeners to buttons
 for (var i = 0; i < buttons.length; i++) {
-    if (buttons[i].id !== "solve-button" && buttons[i].id !== "delete-all-button") {
+    if (buttons[i].id !== "solve-button" && buttons[i].id !== "delete-all-button" && buttons[i].id !== "generate-button") {
         buttons[i].addEventListener("click", (e) => {
             getEditMode(e);
         });
@@ -57,6 +58,9 @@ deleteAllButton.addEventListener("click", () => {
 });
 solveMazeButton.addEventListener("click", () => {
     startSolve();
+});
+generateMazeButton.addEventListener("click", () => {
+    startGenerate();
 });
 
 // Add event listeners to range input
@@ -233,7 +237,7 @@ async function startSolve() {
 
         drawAll();
         disableMenu();
-        solveAlgorithm = solveAlgorithmSelect.value;
+        const solveAlgorithm = solveAlgorithmSelect.value;
         var solved;
         switch (solveAlgorithm) {
             case "I_DFS":
@@ -265,7 +269,30 @@ async function startSolve() {
 }
 
 /**
+ * A function that handles generating a maze based on user input
+ */
+async function startGenerate() {
+    const generateAlgorithm = generateAlgorithmSelect.value;
+
+    maze.clear();
+    drawAll();
+    disableMenu();
+
+    switch(generateAlgorithm) {
+        case "random-prim":
+            await RandomPrim();
+            break;
+    }
+
+    maze.resetTiles();
+    drawAll();
+    enableMenu();
+}
+
+/**
  * A search function that implements iterative DFS
+ * @param {Tile} startTile the starting tile in the maze
+ * @param {Tile} destinationTile the destination tile in the maze
  * @return {boolean} whether or not a path has been found
  */
 async function IterativeDFS(startTile, destinationTile) {
@@ -293,10 +320,8 @@ async function IterativeDFS(startTile, destinationTile) {
         
         // Iterate through each adjacent tile
         const adjacentTiles = maze.getAdjacent(currentTile);
-        for (var i = 0; i < adjacentTiles.length; i++) {
-            const adjTile = adjacentTiles[i];
-
-            if (!adjTile.checked) {  // Tile hasn't been checked
+        for (const adjTile of adjacentTiles) {
+            if (!adjTile.checked && adjTile.type !== 3) {  // Tile hasn't been checked
                 adjTile.parentTile = currentTile;
 
                 if (adjTile.equals(destinationTile)) {  // Found the destination tile
@@ -316,6 +341,12 @@ async function IterativeDFS(startTile, destinationTile) {
     return foundDestination;
 }
 
+/**
+ * A search function that implements recursive DFS
+ * @param {Tile} startTile the starting tile in the maze
+ * @param {Tile} destinationTile the destination tile in the maze
+ * @return {boolean} whether or not a path has been found
+ */
 async function RecursiveDFS(currentTile, destinationTile) {
 
     currentTile.visited = true;
@@ -330,12 +361,11 @@ async function RecursiveDFS(currentTile, destinationTile) {
 
     // Iterate through each adjacent tile
     const adjacentTiles = maze.getAdjacent(currentTile);
-    for (var i = 0; i < adjacentTiles.length; i++) {
-        const adjTile = adjacentTiles[i];
-
-        if (!adjTile.visited) {
+    for (const adjTile of adjacentTiles) {
+        if (!adjTile.visited && adjTile.type !== 3) {
             adjTile.parentTile = currentTile;
-            if (await RecursiveDFS(adjTile, destinationTile)) {
+            const foundDestinationCallback = await RecursiveDFS(adjTile, destinationTile)
+            if (foundDestinationCallback) {
                 return true;
             }
         } 
@@ -345,6 +375,12 @@ async function RecursiveDFS(currentTile, destinationTile) {
 
 } 
 
+/**
+ * A search function that implements iterative BFS
+ * @param {Tile} startTile the starting tile in the maze
+ * @param {Tile} destinationTile the destination tile in the maze
+ * @return {boolean} whether or not a path has been found
+ */
 async function IterativeBFS(startTile, destinationTile) {
     var queue = [];
     var foundDestination = false;
@@ -368,10 +404,8 @@ async function IterativeBFS(startTile, destinationTile) {
 
         // Iterate through each adjacent tile
         const adjacentTiles = maze.getAdjacent(currentTile);
-        for (var i = 0; i < adjacentTiles.length; i++) {
-            const adjTile = adjacentTiles[i];
-
-            if (!adjTile.checked) {  // Tile hasn't been checked
+        for (const adjTile of adjacentTiles) {
+            if (!adjTile.checked && adjTile.type !== 3) {  // Tile hasn't been checked
                 adjTile.parentTile = currentTile;
 
                 if (adjTile.equals(destinationTile)) {  // Found the destination tile
@@ -419,6 +453,7 @@ function enableMenu() {
     visualizationDelayRange.removeAttribute('disabled');
     gridLinesCheckbox.removeAttribute('disabled');
     visualizeStepsCheckbox.removeAttribute('disabled');
+    generateAlgorithmSelect.removeAttribute('disabled');
 }
 
 /**
@@ -433,6 +468,76 @@ function disableMenu() {
     visualizationDelayRange.setAttribute('disabled', '');
     gridLinesCheckbox.setAttribute('disabled', '');
     visualizeStepsCheckbox.setAttribute('disabled', '');
+    generateAlgorithmSelect.setAttribute('disabled', '');
+}
+
+/**
+ * A function that generates a maze using randomized prim's algorithm
+ */
+async function RandomPrim() {
+    var tileList = [];
+
+    // fill all cells with walls
+    for (var i = 0; i < maze.matrix.length; i++) {
+        for (var j = 0; j < maze.matrix[i].length; j++) {
+            maze.matrix[i][j].type = 3;
+        }
+    }
+
+    // Pick a random tile and mark it as part of the maze
+    const randomRow = Math.floor(Math.random() * maze.rows);
+    const randomCol = Math.floor(Math.random() * maze.columns);
+    const randomTile = maze.matrix[randomRow][randomCol];
+    randomTile.type = 0;
+    randomTile.checked = true;
+    randomTile.visited = true;
+    
+    // Add the adjacent tiles to the tile list
+    for (const adjTile of maze.getAdjacent(randomTile)) {
+        adjTile.checked = true;
+        tileList.push(adjTile);
+    }
+
+    if (showSteps) {
+        drawAll();
+    }
+
+    while (tileList.length > 0) {
+
+        // Pick a random element and remove it
+        const randomIndex = Math.floor(Math.random() * tileList.length);
+        const tile = tileList.splice(randomIndex, 1)[0];
+        tile.visited = true;
+
+        // Get the number of empty tiles around the tile
+        tile.type = 0;
+        var numEmptyTiles = 0;
+        const adjacentTiles = maze.getAdjacent(tile);
+        for (const adjTile of adjacentTiles) {
+            if (adjTile.type === 0) {
+                numEmptyTiles++;
+            }
+        }
+        tile.type = 3;
+
+        // Add adjacent tiles to the list if the number of adjacent empty tiles is 1
+        if (numEmptyTiles === 1) {
+            tile.type = 0;
+            for (const adjTile of adjacentTiles) {
+                if (!adjTile.checked) {
+                    adjTile.checked = true;
+                    tileList.push(adjTile);
+                }
+            }
+        }
+
+        if (showSteps) {
+            draw(tile.row, tile.column);
+            await sleep(sleepTimeMS);
+        }
+
+    }
+
 }
 
 /**

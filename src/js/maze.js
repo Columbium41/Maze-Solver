@@ -52,9 +52,7 @@ export default class Maze {
         var adjacentTiles = [];
 
         // Check if the current tile is valid
-        if (this.tileValid(r, c)) {
-            const tile = this.matrix[r][c];
-            
+        if (this.tileValid(r, c)) { 
             if (tile.type === 4 && this.tileValid(r, c - 1)) {  // left push
                 adjacentTiles.push(this.matrix[r][c - 1]);
             }
@@ -89,13 +87,13 @@ export default class Maze {
     }
 
     /**
-     * A method that checks if a specified row and column is in the maze and is not a wall
+     * A method that checks if a specified row and column is in the maze
      * @param {Number} r The row of the tile
      * @param {Number} c The column of the tile
      * @returns {boolean} Whether the tile is valid or not
      */
     tileValid(r, c) {
-        return (r >= 0 && c >= 0 && r < this.rows && c < this.columns && this.matrix[r][c].type !== 3);
+        return (r >= 0 && c >= 0 && r < this.rows && c < this.columns);
     }
 
     /**

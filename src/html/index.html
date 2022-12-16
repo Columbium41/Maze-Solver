@@ -21,10 +21,10 @@
                 <div class="ui-container col-flex">
                     <h2>View</h2>
                     <label for="show-grid">show grid lines:
-                        <input type="checkbox" class="checkbox" id="show-grid" checked>
+                        <input type="checkbox" class="checkbox" id="show-grid">
                     </label>
                     <label for="visualize-steps">visualize steps:
-                        <input type="checkbox" class="checkbox" id="visualize-steps">
+                        <input type="checkbox" class="checkbox" id="visualize-steps" checked>
                     </label>
                     <label for="visualize-delay-input">
                         <article>delay (30ms):</article>
@@ -45,8 +45,13 @@
                 </div>
                 <div class="ui-container col-flex">
                     <h2>Configure</h2>
+                    <label for="generate-maze-select"></label>
+                    <select name="selected-generate-algorithm" id="generate-maze-select">
+                        <option value="random-prim">Randomized Prim's</option>
+                    </select>
+                    <button class="button" id="generate-button">Generate Maze</button>
                     <label for="solve-maze-select"></label>
-                    <select name="selected-algorithm" id="solve-maze-select">
+                    <select name="selected-solve-algorithm" id="solve-maze-select">
                         <option value="I_DFS">Iterative Depth-First Search</option>
                         <option value="I_BFS">Iterative Breadth-First Search</option>
                         <option value="R_DFS">Recursive Depth-First Search</option>
