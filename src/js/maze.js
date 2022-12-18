@@ -52,35 +52,19 @@ export default class Maze {
         var adjacentTiles = [];
 
         // Check if the current tile is valid
-        if (this.tileValid(r, c)) { 
-            if (tile.type === 4 && this.tileValid(r, c - 1)) {  // left push
+        if (this.tileValid(r, c) && (tile.type === 0 || tile.type == 1)) { 
+            if (this.tileValid(r, c - 1)) {
                 adjacentTiles.push(this.matrix[r][c - 1]);
             }
-            else if (tile.type === 5 && this.tileValid(r, c + 1)) {  // right push
+            if (this.tileValid(r, c + 1)) {
                 adjacentTiles.push(this.matrix[r][c + 1]);
             }
-            else if (tile.type === 6 && this.tileValid(r - 1, c)) {  // up push
+            if (this.tileValid(r - 1, c)) {
                 adjacentTiles.push(this.matrix[r - 1][c]);
             }
-            else if (tile.type === 7 && this.tileValid(r + 1, c)) {  // down push
+            if (this.tileValid(r + 1, c)) {
                 adjacentTiles.push(this.matrix[r + 1][c]);
             }
-
-            else if (tile.type === 0 || tile.type == 1) {  // empty tile or start tile
-                if (this.tileValid(r, c - 1)) {
-                    adjacentTiles.push(this.matrix[r][c - 1]);
-                }
-                if (this.tileValid(r, c + 1)) {
-                    adjacentTiles.push(this.matrix[r][c + 1]);
-                }
-                if (this.tileValid(r - 1, c)) {
-                    adjacentTiles.push(this.matrix[r - 1][c]);
-                }
-                if (this.tileValid(r + 1, c)) {
-                    adjacentTiles.push(this.matrix[r + 1][c]);
-                }
-            }
-
         }
 
         return adjacentTiles;

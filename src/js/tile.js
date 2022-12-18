@@ -12,18 +12,7 @@ export default class Tile {
         "Delete": 0,
         "Start Block": 1,
         "Destination Block": 2,
-        "Wall": 3,
-        "Left Block": 4,
-        "Right Block": 5,
-        "Up Block": 6,
-        "Down Block": 7
-    };
-
-    static tileImageDict = {
-        4: leftPush,
-        5: rightPush,
-        6: upPush,
-        7: downPush
+        "Wall": 3
     };
 
     constructor(row, column, type) {

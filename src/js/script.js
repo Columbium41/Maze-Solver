@@ -19,6 +19,7 @@ const canvasContainer = document.getElementById('canvas-container');
 const gridLinesCheckbox = document.getElementById('show-grid');
 const visualizeStepsCheckbox = document.getElementById('visualize-steps');
 const buttons = document.getElementsByClassName("button");
+const editButtons = document.getElementsByClassName('edit-button');
 const deleteAllButton = document.getElementById('delete-all-button');
 const solveMazeButton = document.getElementById('solve-button');
 const solveAlgorithmSelect = document.getElementById('solve-maze-select');
@@ -36,7 +37,7 @@ var showSteps = visualizeStepsCheckbox.checked;
 var editMode = "Start Block";
 var mouseDown = false;
 var finishedAlgorithm = false;
-const gridSize = 25;
+const gridSize = 20;
 const numRows = Math.floor((canvasContainer.clientHeight-10) / gridSize);
 const numColumns = Math.floor((canvasContainer.clientWidth-10) / gridSize);
 var sleepTimeMS = visualizationDelayRange.value;
@@ -49,21 +50,20 @@ canvas.style.height = `${canvas.height}px`;
 var maze = new Maze(numRows, numColumns);
 
 // Add event listeners to buttons
-for (var i = 0; i < buttons.length; i++) {
-    if (buttons[i].id !== "solve-button" && buttons[i].id !== "delete-all-button" && buttons[i].id !== "generate-button") {
-        buttons[i].addEventListener("click", (e) => {
-            getEditMode(e);
-        });
-    }
+for (var i = 0; i < editButtons.length; i++) {
+    editButtons[i].addEventListener("click", (e) => {
+        getEditMode(e);
+    });
+    
 }
-deleteAllButton.addEventListener("click", () => {
+deleteAllButton.addEventListener("click", () => {  // Delete All Button
     maze.clear();
     drawAll();
 });
-solveMazeButton.addEventListener("click", () => {
+solveMazeButton.addEventListener("click", () => {  // Solve Maze Button
     startSolve();
 });
-generateMazeButton.addEventListener("click", () => {
+generateMazeButton.addEventListener("click", () => {  // Generate Button
     startGenerate();
 });
 
@@ -194,11 +194,7 @@ function draw(r, c) {
 
     const x = c * gridSize;
     const y = r * gridSize;
-
-    if (tile.type in Tile.tileImageDict) {  // Push blocks
-        ctx.drawImage(Tile.tileImageDict[tile.type], x, y, gridSize, gridSize);
-    }
-    else if (tile.type === 0) {  // Empty Tile
+    if (tile.type === 0) {  // Empty Tile
         if (tile.inPath) {  // Empty tile is a part of the path
             ctx.fillStyle = purple;
             ctx.fillRect(x, y, gridSize, gridSize);
