@@ -1,12 +1,3 @@
-const leftPush = new Image();
-leftPush.src = "/images/left-arrow.png";
-const rightPush = new Image();
-rightPush.src = "/images/right-arrow.png";
-const upPush = new Image();
-upPush.src = "/images/up-arrow.png";
-const downPush = new Image();
-downPush.src = "/images/down-arrow.png";
-
 export default class Tile {
     static tileTypeDict = {
         "Delete": 0,
