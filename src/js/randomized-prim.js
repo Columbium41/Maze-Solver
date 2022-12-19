@@ -27,6 +27,7 @@ export default async function RandomPrim(maze, showSteps, sleepTimeMS) {
     // Add the adjacent tiles to the tile list
     for (const adjTile of maze.getAdjacent(randomTile)) {
         adjTile.checked = true;
+        adjTile.parentTile = randomTile;
         tileList.push(adjTile);
     }
 
@@ -44,8 +45,7 @@ export default async function RandomPrim(maze, showSteps, sleepTimeMS) {
         // Get the number of empty tiles around the tile
         tile.type = 0;
         var numEmptyTiles = 0;
-        const adjacentTiles = maze.getAdjacent(tile);
-        for (const adjTile of adjacentTiles) {
+        for (const adjTile of maze.getAdjacent(tile)) {
             if (adjTile.type === 0) {
                 numEmptyTiles++;
             }
@@ -55,15 +55,42 @@ export default async function RandomPrim(maze, showSteps, sleepTimeMS) {
         // Add adjacent tiles to the list if the number of adjacent empty tiles is 1
         if (numEmptyTiles === 1) {
             tile.type = 0;
-            for (const adjTile of adjacentTiles) {
+            const diff_x = tile.column - tile.parentTile.column;
+            const diff_y = tile.row - tile.parentTile.row;
+
+            var nextTile = 0;
+            if (diff_x > 0 && maze.tileValid(tile.row, tile.column + 1)) {
+                nextTile = maze.matrix[tile.row][tile.column + 1];
+            }
+            else if (diff_x < 0 && maze.tileValid(tile.row, tile.column - 1)) {
+                nextTile = maze.matrix[tile.row][tile.column - 1];
+            }
+            else if (diff_y > 0 && maze.tileValid(tile.row + 1, tile.column)) {
+                nextTile = maze.matrix[tile.row + 1][tile.column];
+            }
+            else if (diff_y < 0 && maze.tileValid(tile.row - 1, tile.column)) {
+                nextTile = maze.matrix[tile.row - 1][tile.column];
+            }
+            if (nextTile !== 0) {
+                nextTile.checked = true;
+                nextTile.visited = true;
+                nextTile.type = 0;
+            }
+
+            // Add adjacent tiles to list
+            for (const adjTile of maze.getAdjacent(nextTile)) {
                 if (!adjTile.checked) {
                     adjTile.checked = true;
+                    adjTile.parentTile = nextTile;
                     tileList.push(adjTile);
                 }
             }
             
             if (showSteps) {
                 draw(tile.row, tile.column);
+                if (nextTile !== 0) {
+                    draw(nextTile.row, nextTile.column);
+                }
                 await sleep(sleepTimeMS);
             }
         }
