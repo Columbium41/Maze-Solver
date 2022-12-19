@@ -14,6 +14,7 @@ export default async function IterativeDFS(maze, showSteps, startTile, destinati
 
     // Add the start tile to the top of the stack
     startTile.checked = true;
+    startTile.visited = true;
     stack.push(startTile);
 
     // Loop while stack isn't empty and the destination has not been found
@@ -21,19 +22,14 @@ export default async function IterativeDFS(maze, showSteps, startTile, destinati
 
         // Get the tile at the top of the stack and check if it has been visited
         const currentTile = stack.pop();
-        if (currentTile.visited) {
-            continue;  // Skip tile if it has already been visited
-        }
         currentTile.visited = true;
 
         if (showSteps) {
             draw(currentTile.row, currentTile.column);
-            await sleep(sleepTimeMS);
         }
         
         // Iterate through each adjacent tile
-        const adjacentTiles = maze.getAdjacent(currentTile);
-        for (const adjTile of adjacentTiles) {
+        for (const adjTile of maze.getAdjacent(currentTile)) {
             if (!adjTile.checked && adjTile.type !== 3) {  // Tile hasn't been checked
                 adjTile.parentTile = currentTile;
 
@@ -50,6 +46,11 @@ export default async function IterativeDFS(maze, showSteps, startTile, destinati
                 }
             }
         }
+
+        if (showSteps) {
+            await sleep(sleepTimeMS);
+        }
+
     }
 
     return false;

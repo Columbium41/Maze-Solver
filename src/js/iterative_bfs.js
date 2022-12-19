@@ -13,25 +13,21 @@ export default async function BFS(maze, showSteps, startTile, destinationTile, s
     var queue = [];
 
     // Add start tile to queue
+    startTile.visited = true;
     startTile.checked = true;
     queue.push(startTile);
 
     while (queue.length > 0) {
 
         const currentTile = queue.shift();
-        if (currentTile.visited) {
-            continue;
-        }
         currentTile.visited = true;
 
         if (showSteps) {
             draw(currentTile.row, currentTile.column);
-            await sleep(sleepTimeMS);
         }
 
         // Iterate through each adjacent tile
-        const adjacentTiles = maze.getAdjacent(currentTile);
-        for (const adjTile of adjacentTiles) {
+        for (const adjTile of maze.getAdjacent(currentTile)) {
             if (!adjTile.checked && adjTile.type !== 3) {  // Tile hasn't been checked
                 adjTile.parentTile = currentTile;
 
@@ -47,6 +43,10 @@ export default async function BFS(maze, showSteps, startTile, destinationTile, s
                     draw(adjTile.row, adjTile.column);
                 }
             }
+        }
+
+        if (showSteps) {
+            await sleep(sleepTimeMS);
         }
 
     }
