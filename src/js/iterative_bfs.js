@@ -9,7 +9,7 @@ import { sleep, draw } from './script.js';
  * @param {Number} sleepTimeMS how long to animate each step in milliseconds 
  * @return {boolean} whether or not a path has been found
  */
-export default async function IterativeBFS(maze, showSteps, startTile, destinationTile, sleepTimeMS) {
+export default async function BFS(maze, showSteps, startTile, destinationTile, sleepTimeMS) {
     var queue = [];
 
     // Add start tile to queue

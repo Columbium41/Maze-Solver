@@ -1,9 +1,10 @@
 import Maze from "./maze.js";
 import Tile from "./tile.js";
 import IterativeDFS from "./iterative_dfs.js";
-import IterativeBFS from "./iterative_bfs.js";
+import BFS from "./iterative_bfs.js";
 import RecursiveDFS from "./recursive_dfs.js";
 import RandomPrim from "./randomized-prim.js";
+import BBFS from "./bidirectional_bfs.js";
 
 // COLORS
 const white = "rgb(220, 220, 220)";
@@ -243,11 +244,14 @@ async function startSolve() {
             case "I_DFS":
                 solved = await IterativeDFS(maze, showSteps, startTile, destinationTile, sleepTimeMS);
                 break;
-            case "I_BFS":
-                solved = await IterativeBFS(maze, showSteps, startTile, destinationTile, sleepTimeMS);
+            case "BFS":
+                solved = await BFS(maze, showSteps, startTile, destinationTile, sleepTimeMS);
                 break;
             case "R_DFS":
                 solved = await RecursiveDFS(maze, showSteps, startTile, destinationTile, sleepTimeMS);
+                break;
+            case "BBFS":
+                solved = await BBFS();
                 break;
         }
 

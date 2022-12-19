@@ -52,7 +52,7 @@ export default class Maze {
         var adjacentTiles = [];
 
         // Check if the current tile is valid
-        if (this.tileValid(r, c) && (tile.type === 0 || tile.type == 1)) { 
+        if (this.tileValid(r, c) && tile.type !== 3) { 
             if (this.tileValid(r, c - 1)) {
                 adjacentTiles.push(this.matrix[r][c - 1]);
             }
