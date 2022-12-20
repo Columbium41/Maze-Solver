@@ -22,7 +22,7 @@ export default async function RecursiveDFS(maze, showSteps, currentTile, destina
     }
 
     // Iterate through each adjacent tile
-    for (const adjTile of maze.getAdjacent(currentTile)) {
+    for (const adjTile of maze.getAdjacent(currentTile).reverse()) {
         if (!adjTile.visited && adjTile.type !== 3) {
             adjTile.parentTile = currentTile;
             const foundDestinationCallback = await RecursiveDFS(maze, showSteps, adjTile, destinationTile, sleepTimeMS);
