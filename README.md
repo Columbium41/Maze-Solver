@@ -11,3 +11,5 @@ A website made with HTML, CSS, and vanilla JS that allows users to build mazes a
 - Iterative Breadth-First-Search
 - Recursive Depth-First Search
 - Randomized Prim's Algorithm
+- Bidirectional Breadth-First Search
+- Reversing a Linked List

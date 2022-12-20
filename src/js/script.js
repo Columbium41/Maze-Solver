@@ -251,7 +251,7 @@ async function startSolve() {
                 solved = await RecursiveDFS(maze, showSteps, startTile, destinationTile, sleepTimeMS);
                 break;
             case "BBFS":
-                solved = await BBFS();
+                solved = await BBFS(maze, showSteps, startTile, destinationTile, sleepTimeMS);
                 break;
         }
 
