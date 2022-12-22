@@ -2,7 +2,6 @@ import Maze from "./maze.js";
 import Tile from "./tile.js";
 import IterativeDFS from "./iterative_dfs.js";
 import BFS from "./iterative_bfs.js";
-import RecursiveDFS from "./recursive_dfs.js";
 import RandomPrim from "./randomized-prim.js";
 import BBFS from "./bidirectional_bfs.js";
 
@@ -241,14 +240,11 @@ async function startSolve() {
         const solveAlgorithm = solveAlgorithmSelect.value;
         var solved;
         switch (solveAlgorithm) {
-            case "I_DFS":
+            case "DFS":
                 solved = await IterativeDFS(maze, showSteps, startTile, destinationTile, sleepTimeMS);
                 break;
             case "BFS":
                 solved = await BFS(maze, showSteps, startTile, destinationTile, sleepTimeMS);
-                break;
-            case "R_DFS":
-                solved = await RecursiveDFS(maze, showSteps, startTile, destinationTile, sleepTimeMS);
                 break;
             case "BBFS":
                 solved = await BBFS(maze, showSteps, startTile, destinationTile, sleepTimeMS);
