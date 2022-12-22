@@ -7,9 +7,8 @@ A website made with HTML, CSS, and vanilla JS that allows users to build mazes a
 - Basics of HTML Canvas
 - Basics of JavaScript async functions
 - Vanilla JavaScript Modules
-- Iterative Depth-First Search
-- Iterative Breadth-First-Search
-- Recursive Depth-First Search
-- Randomized Prim's Algorithm
+- Depth-First Search
+- Breadth-First-Search
+- Randomized Prim's Algorithm for Maze Generation
 - Bidirectional Breadth-First Search
-- Reversing a Linked List
+- Reversing Linked Lists
