@@ -27,8 +27,8 @@
                         <input type="checkbox" class="checkbox" id="visualize-steps" checked>
                     </label>
                     <label for="visualize-delay-input">
-                        <article>delay (30ms):</article>
-                        <input type="range" value="30" min="5" max="100" step="5" id="visualize-delay-input">
+                        <article>delay (20ms):</article>
+                        <input type="range" value="20" min="5" max="100" id="visualize-delay-input">
                     </label>
                 </div>
                 <div class="ui-container row-flex">
@@ -44,6 +44,7 @@
                     <label for="generate-maze-select"></label>
                     <select name="selected-generate-algorithm" id="generate-maze-select">
                         <option value="random-prim">Randomized Prim's</option>
+                        <option value="random-dfs">Randomized DFS</option>
                     </select>
                     <button class="button" id="generate-button">Generate Maze</button>
                     <label for="solve-maze-select"></label>

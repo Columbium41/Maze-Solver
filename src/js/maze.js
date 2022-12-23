@@ -72,6 +72,64 @@ export default class Maze {
     }
 
     /**
+     * A method that edits tiles between tile1 and tile2
+     * Precondition: tile1 and tile2 are on the same row or same column and tile1 is not equal to tile2
+     * @param {Tile} tile1 The first tile
+     * @param {Tile} tile2 The second tile
+     * @returns {Array} An array containing all tiles that were edited
+     */
+    editTilesBetween(tile1, tile2, tileType) {
+        const diff_x = tile2.column - tile1.column;
+        const diff_y = tile2.row - tile1.row;
+
+        if (diff_x !== 0 && diff_y !== 0) {
+            return [];
+        }
+
+        var i;
+        var j;
+        var editingRow;
+
+        if (diff_x > 0) {
+            i = tile1.column;
+            j = tile2.column;
+            editingRow = true;
+        }
+        else if (diff_x < 0) {
+            i = tile2.column;
+            j = tile1.column;
+            editingRow = true;
+        }
+        else if (diff_y > 0) {
+            i = tile1.row;
+            j = tile2.row;
+            editingRow = false;
+        }
+        else if (diff_y < 0) {
+            i = tile2.row;
+            j = tile1.row;
+            editingRow = false;
+        }
+        
+        var editedTiles = [];
+        if (editingRow) {
+            for (var index = i; index <= j; index++) {
+                this.matrix[tile1.row][index].type = tileType;
+                editedTiles.push(this.matrix[tile1.row][index]);
+            }
+        }
+        else {
+            for (var index = i; index <= j; index++) {
+                this.matrix[index][tile1.column].type = tileType;
+                editedTiles.push(this.matrix[index][tile1.column]);
+            }
+        }
+
+        return editedTiles;
+
+    }
+
+    /**
      * A method that checks if a specified row and column is in the maze
      * @param {Number} r The row of the tile
      * @param {Number} c The column of the tile

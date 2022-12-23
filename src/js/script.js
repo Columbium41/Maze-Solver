@@ -1,9 +1,11 @@
 import Maze from "./maze.js";
 import Tile from "./tile.js";
+
 import IterativeDFS from "./iterative_dfs.js";
 import BFS from "./iterative_bfs.js";
 import RandomPrim from "./randomized-prim.js";
 import BBFS from "./bidirectional_bfs.js";
+import randomizedDFS from "./randomized_dfs.js";
 
 // COLORS
 const white = "rgb(220, 220, 220)";
@@ -281,6 +283,9 @@ async function startGenerate() {
     switch(generateAlgorithm) {
         case "random-prim":
             await RandomPrim(maze, showSteps, sleepTimeMS);
+            break;
+        case "random-dfs":
+            await randomizedDFS(maze, showSteps, sleepTimeMS);
             break;
     }
 
