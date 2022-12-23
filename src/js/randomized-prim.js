@@ -25,7 +25,7 @@ export default async function RandomPrim(maze, showSteps, sleepTimeMS) {
     randomTile.visited = true;
     
     // Add the adjacent tiles to the tile list
-    for (const adjTile of maze.getAdjacent(randomTile)) {
+    for (const adjTile of maze.getAdjacent(randomTile, 1)) {
         adjTile.checked = true;
         adjTile.parentTile = randomTile;
         tileList.push(adjTile);
@@ -45,7 +45,7 @@ export default async function RandomPrim(maze, showSteps, sleepTimeMS) {
         // Get the number of empty tiles around the tile
         tile.type = 0;
         var numEmptyTiles = 0;
-        for (const adjTile of maze.getAdjacent(tile)) {
+        for (const adjTile of maze.getAdjacent(tile, 1)) {
             if (adjTile.type === 0) {
                 numEmptyTiles++;
             }
@@ -78,7 +78,7 @@ export default async function RandomPrim(maze, showSteps, sleepTimeMS) {
             }
 
             // Add adjacent tiles to list
-            for (const adjTile of maze.getAdjacent(nextTile)) {
+            for (const adjTile of maze.getAdjacent(nextTile, 1)) {
                 if (!adjTile.checked) {
                     adjTile.checked = true;
                     adjTile.parentTile = nextTile;

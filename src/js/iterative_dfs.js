@@ -29,21 +29,20 @@ export default async function IterativeDFS(maze, showSteps, startTile, destinati
         }
         
         // Iterate through each adjacent tile
-        for (const adjTile of maze.getAdjacent(currentTile)) {
-            if (!adjTile.checked && adjTile.type !== 3) {  // Tile hasn't been checked
-                adjTile.parentTile = currentTile;
+        const adjTiles = maze.getAdjacent(currentTile, 1).filter((tile) => { return (!tile.checked && tile.type !== 3) })
+        for (const adjTile of adjTiles) {
+            adjTile.parentTile = currentTile;
 
-                if (adjTile.equals(destinationTile)) {  // Found the destination tile
-                    return true;
-                }
-                else {  // Add tile to the top of the stack
-                    adjTile.checked = true;
-                    stack.push(adjTile);
-                }
+            if (adjTile.equals(destinationTile)) {  // Found the destination tile
+                return true;
+            }
+            else {  // Add tile to the top of the stack
+                adjTile.checked = true;
+                stack.push(adjTile);
+            }
 
-                if (showSteps) {
-                    draw(adjTile.row, adjTile.column);
-                }
+            if (showSteps) {
+                draw(adjTile.row, adjTile.column);
             }
         }
 

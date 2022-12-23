@@ -27,7 +27,8 @@ export default async function BFS(maze, showSteps, startTile, destinationTile, s
         }
 
         // Iterate through each adjacent tile
-        for (const adjTile of maze.getAdjacent(currentTile)) {
+        const adjTiles = maze.getAdjacent(currentTile, 1).filter((tile) => { return (!tile.checked && tile.type !== 3) })
+        for (const adjTile of adjTiles) {
             if (!adjTile.checked && adjTile.type !== 3) {  // Tile hasn't been checked
                 adjTile.parentTile = currentTile;
 

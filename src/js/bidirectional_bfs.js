@@ -37,7 +37,7 @@ export default async function BBFS(maze, showSteps, startTile, destinationTile, 
             currentTile = destinationQueue.shift();
             currentTile.visited = true;
 
-            for (const adjTile of maze.getAdjacent(currentTile)) {
+            for (const adjTile of maze.getAdjacent(currentTile, 1)) {
                 if (adjTile.distance !== 1 && adjTile.type !== 3) {
                     if (adjTile.distance === 0) {  // adjTile belongs to start path
                         // Reconstruct path from the destination tile to the adjTile
@@ -64,7 +64,7 @@ export default async function BBFS(maze, showSteps, startTile, destinationTile, 
             currentTile = startQueue.shift();
             currentTile.visited = true;
                         
-            for (const adjTile of maze.getAdjacent(currentTile)) {
+            for (const adjTile of maze.getAdjacent(currentTile, 1)) {
                 if (adjTile.distance !== 0 && adjTile.type !== 3) {
                     if (adjTile.distance === 1) {  // adjTile belongs to destination path
                         // Reconstruct path from the destination tile to the adjTile

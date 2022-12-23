@@ -44,26 +44,27 @@ export default class Maze {
     /**
      * A method that returns an array of adjacent tiles given a row and column
      * @param {Tile} tile A Tile in the maze
+     * @param {Number} d How far to search away
      * @returns {Array} An array of adjacent tiles
      */
-    getAdjacent(tile) {
+    getAdjacent(tile, d) {
         const r = tile.row;
         const c = tile.column;
         var adjacentTiles = [];
 
         // Check if the current tile is valid
         if (this.tileValid(r, c) && tile.type !== 3) { 
-            if (this.tileValid(r, c - 1)) {
-                adjacentTiles.push(this.matrix[r][c - 1]);
+            if (this.tileValid(r, c - d)) {
+                adjacentTiles.push(this.matrix[r][c - d]);
             }
-            if (this.tileValid(r, c + 1)) {
-                adjacentTiles.push(this.matrix[r][c + 1]);
+            if (this.tileValid(r, c + d)) {
+                adjacentTiles.push(this.matrix[r][c + d]);
             }
-            if (this.tileValid(r - 1, c)) {
-                adjacentTiles.push(this.matrix[r - 1][c]);
+            if (this.tileValid(r - d, c)) {
+                adjacentTiles.push(this.matrix[r - d][c]);
             }
-            if (this.tileValid(r + 1, c)) {
-                adjacentTiles.push(this.matrix[r + 1][c]);
+            if (this.tileValid(r + d, c)) {
+                adjacentTiles.push(this.matrix[r + d][c]);
             }
         }
 
