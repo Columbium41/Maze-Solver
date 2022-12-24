@@ -76,6 +76,7 @@ export default class Maze {
      * Precondition: tile1 and tile2 are on the same row or same column and tile1 is not equal to tile2
      * @param {Tile} tile1 The first tile
      * @param {Tile} tile2 The second tile
+     * @param {Number} tileType The type to modify the tiles
      * @returns {Array} An array containing all tiles that were edited
      */
     editTilesBetween(tile1, tile2, tileType) {

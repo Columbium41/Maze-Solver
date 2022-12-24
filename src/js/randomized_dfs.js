@@ -35,7 +35,7 @@ export default async function randomizedDFS(maze, showSteps, sleepTimeMS) {
         const currentTile = stack.pop();
         currentTile.visited = true;
         
-        const adjTiles = maze.getAdjacent(currentTile, 2).filter((tile) => { return !tile.checked });
+        const adjTiles = maze.getAdjacent(currentTile, 2).filter((tile) => { return tile.type !== 0 });
 
         if (adjTiles.length > 0) {
             stack.push(currentTile);
@@ -43,7 +43,14 @@ export default async function randomizedDFS(maze, showSteps, sleepTimeMS) {
             // Pick a random unvisited adjacent tile from currentTile
             const randomIndex = Math.floor(Math.random() * adjTiles.length);
             const tile = adjTiles[randomIndex];
-            tile.checked = true;
+            
+            // Mark all tiles as visited
+            if (showSteps) {
+                for (const adjTile of adjTiles) {
+                    adjTile.checked = true;
+                    draw(adjTile.row, adjTile.column);
+                }
+            }
             
             const edited = maze.editTilesBetween(currentTile, tile, 0);
             stack.push(tile);

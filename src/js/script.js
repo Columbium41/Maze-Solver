@@ -196,17 +196,17 @@ function draw(r, c) {
 
     const x = c * gridSize;
     const y = r * gridSize;
-    if (tile.type === 0) {  // Empty Tile
+    if (tile.visited && showSteps) {  // Empty tile has been visited
+        ctx.fillStyle = orange;
+        ctx.fillRect(x, y, gridSize, gridSize);
+    }
+    else if (tile.checked && showSteps) {  // Empty tile has been checked
+        ctx.fillStyle = yellow;
+        ctx.fillRect(x, y, gridSize, gridSize);
+    }
+    else if (tile.type === 0) {  // Empty Tile
         if (tile.inPath) {  // Empty tile is a part of the path
             ctx.fillStyle = purple;
-            ctx.fillRect(x, y, gridSize, gridSize);
-        }
-        else if (tile.visited && showSteps) {  // Empty tile has been visited
-            ctx.fillStyle = orange;
-            ctx.fillRect(x, y, gridSize, gridSize);
-        }
-        else if (tile.checked && showSteps) {  // Empty tile has been checked
-            ctx.fillStyle = yellow;
             ctx.fillRect(x, y, gridSize, gridSize);
         }
         else { 
