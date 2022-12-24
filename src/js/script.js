@@ -3,7 +3,7 @@ import Tile from "./tile.js";
 
 import IterativeDFS from "./iterative_dfs.js";
 import BFS from "./iterative_bfs.js";
-import RandomPrim from "./randomized-prim.js";
+import RandomPrim from "./randomized_prim.js";
 import BBFS from "./bidirectional_bfs.js";
 import randomizedDFS from "./randomized_dfs.js";
 
