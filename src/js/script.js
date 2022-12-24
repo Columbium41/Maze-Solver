@@ -196,33 +196,32 @@ function draw(r, c) {
 
     const x = c * gridSize;
     const y = r * gridSize;
-    if (tile.visited && showSteps) {  // Empty tile has been visited
-        ctx.fillStyle = orange;
-        ctx.fillRect(x, y, gridSize, gridSize);
-    }
-    else if (tile.checked && showSteps) {  // Empty tile has been checked
-        ctx.fillStyle = yellow;
-        ctx.fillRect(x, y, gridSize, gridSize);
-    }
-    else if (tile.type === 0) {  // Empty Tile
-        if (tile.inPath) {  // Empty tile is a part of the path
-            ctx.fillStyle = purple;
-            ctx.fillRect(x, y, gridSize, gridSize);
-        }
-        else { 
-            ctx.clearRect(x, y, gridSize, gridSize);
-        }
-    }
-    else if (tile.type === 3) {  // Wall
-        ctx.fillStyle = white;
-        ctx.fillRect(x, y, gridSize, gridSize);
-    }
-    else if (tile.type === 1) {  // Start Block
+
+    if (tile.type === 1) {  // Start Block
         ctx.fillStyle = green;
         ctx.fillRect(x, y, gridSize, gridSize);
     }
     else if (tile.type === 2) {  // Destination Block
         ctx.fillStyle = red;
+        ctx.fillRect(x, y, gridSize, gridSize);
+    }
+    else if (tile.inPath && tile.type === 0) {  // Tile is a part of the path
+        ctx.fillStyle = purple;
+        ctx.fillRect(x, y, gridSize, gridSize);
+    }
+    else if (tile.visited && showSteps) {  // Tile has been visited
+        ctx.fillStyle = orange;
+        ctx.fillRect(x, y, gridSize, gridSize);
+    }
+    else if (tile.checked && showSteps) {  // Tile has been checked
+        ctx.fillStyle = yellow;
+        ctx.fillRect(x, y, gridSize, gridSize);
+    }
+    else if (tile.type === 0) {  // Empty Tile
+        ctx.clearRect(x, y, gridSize, gridSize);
+    }
+    else if (tile.type === 3) {  // Wall
+        ctx.fillStyle = white;
         ctx.fillRect(x, y, gridSize, gridSize);
     }
 }
