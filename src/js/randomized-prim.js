@@ -19,15 +19,15 @@ export default async function RandomPrim(maze, showSteps, sleepTimeMS) {
     // Pick a random tile and mark it as part of the maze
     const randomRow = Math.floor(Math.random() * maze.rows);
     const randomCol = Math.floor(Math.random() * maze.columns);
-    const randomTile = maze.matrix[randomRow][randomCol];
-    randomTile.type = 0;
-    randomTile.checked = true;
-    randomTile.visited = true;
+    const initialTile = maze.matrix[randomRow][randomCol];
+    initialTile.type = 0;
+    initialTile.checked = true;
+    initialTile.visited = true;
     
     // Add the adjacent tiles to the tile list
-    for (const adjTile of maze.getAdjacent(randomTile, 1)) {
+    for (const adjTile of maze.getAdjacent(initialTile, 2)) {
         adjTile.checked = true;
-        adjTile.parentTile = randomTile;
+        adjTile.parentTile = initialTile;
         tileList.push(adjTile);
     }
 
@@ -36,65 +36,41 @@ export default async function RandomPrim(maze, showSteps, sleepTimeMS) {
     }
 
     while (tileList.length > 0) {
-
         // Pick a random element and remove it
         const randomIndex = Math.floor(Math.random() * tileList.length);
-        const tile = tileList.splice(randomIndex, 1)[0];
-        tile.visited = true;
+        const randomTile = tileList.splice(randomIndex, 1)[0];
 
-        // Get the number of empty tiles around the tile
-        tile.type = 0;
-        var numEmptyTiles = 0;
-        for (const adjTile of maze.getAdjacent(tile, 1)) {
-            if (adjTile.type === 0) {
-                numEmptyTiles++;
-            }
+        // Skip the tile if it has already been visited
+        if (randomTile.visited) {
+            continue;
         }
-        tile.type = 3;
+        randomTile.visited = true;
 
-        // Add adjacent tiles to the list if the number of adjacent empty tiles is 1
-        if (numEmptyTiles === 1) {
-            tile.type = 0;
-            const diff_x = tile.column - tile.parentTile.column;
-            const diff_y = tile.row - tile.parentTile.row;
+        // Make a passage between the chosen tile and its parent tile
+        const editedTiles = maze.editTilesBetween(randomTile, randomTile.parentTile, 0);
+        for (const editedTile of editedTiles) {
+            editedTile.visited = true;
 
-            var nextTile = 0;
-            if (diff_x > 0 && maze.tileValid(tile.row, tile.column + 1)) {
-                nextTile = maze.matrix[tile.row][tile.column + 1];
-            }
-            else if (diff_x < 0 && maze.tileValid(tile.row, tile.column - 1)) {
-                nextTile = maze.matrix[tile.row][tile.column - 1];
-            }
-            else if (diff_y > 0 && maze.tileValid(tile.row + 1, tile.column)) {
-                nextTile = maze.matrix[tile.row + 1][tile.column];
-            }
-            else if (diff_y < 0 && maze.tileValid(tile.row - 1, tile.column)) {
-                nextTile = maze.matrix[tile.row - 1][tile.column];
-            }
-            if (nextTile !== 0) {
-                nextTile.checked = true;
-                nextTile.visited = true;
-                nextTile.type = 0;
-            }
-
-            // Add adjacent tiles to list
-            for (const adjTile of maze.getAdjacent(nextTile, 1)) {
-                if (!adjTile.checked) {
-                    adjTile.checked = true;
-                    adjTile.parentTile = nextTile;
-                    tileList.push(adjTile);
-                }
-            }
-            
             if (showSteps) {
-                draw(tile.row, tile.column);
-                if (nextTile !== 0) {
-                    draw(nextTile.row, nextTile.column);
-                }
-                await sleep(sleepTimeMS);
+                draw(editedTile.row, editedTile.column);
             }
         }
 
+        // Add the adjacent tiles to the tile list
+        const adjTiles = maze.getAdjacent(randomTile, 2).filter((adjTile) => { return adjTile.type === 3 });
+        for (const adjTile of adjTiles) {
+            adjTile.checked = true;
+            adjTile.parentTile = randomTile;
+            tileList.push(adjTile);
+
+            if (showSteps) {
+                draw(adjTile.row, adjTile.column);
+            }
+        }
+
+        if (showSteps) {
+            await sleep(sleepTimeMS);
+        }
     }
 
 }

@@ -20,12 +20,12 @@ export default async function randomizedDFS(maze, showSteps, sleepTimeMS) {
     // Pick a random tile and mark it as part of the maze
     const randomRow = Math.floor(Math.random() * maze.rows);
     const randomCol = Math.floor(Math.random() * maze.columns);
-    const randomTile = maze.matrix[randomRow][randomCol];
+    const initialTile = maze.matrix[randomRow][randomCol];
 
     // Push the starting tile to the stack
-    randomTile.checked = true;
-    randomTile.type = 0;
-    stack.push(randomTile);
+    initialTile.checked = true;
+    initialTile.type = 0;
+    stack.push(initialTile);
 
     if (showSteps) {
         drawAll();
@@ -37,12 +37,13 @@ export default async function randomizedDFS(maze, showSteps, sleepTimeMS) {
         
         const adjTiles = maze.getAdjacent(currentTile, 2).filter((tile) => { return tile.type !== 0 });
 
+        // Generate a path if there is a tile that hasn't been visited yet
         if (adjTiles.length > 0) {
             stack.push(currentTile);
 
-            // Pick a random unvisited adjacent tile from currentTile
+            // Pick a random unvisited adjacent tile from the current tile
             const randomIndex = Math.floor(Math.random() * adjTiles.length);
-            const tile = adjTiles[randomIndex];
+            const randomTile = adjTiles[randomIndex];
             
             // Mark all tiles as visited
             if (showSteps) {
@@ -52,11 +53,12 @@ export default async function randomizedDFS(maze, showSteps, sleepTimeMS) {
                 }
             }
             
-            const edited = maze.editTilesBetween(currentTile, tile, 0);
-            stack.push(tile);
+            // Make a passage between the currentTile and randomly selected unvisited adjacentTile
+            const editedTiles = maze.editTilesBetween(currentTile, randomTile, 0);
+            stack.push(randomTile);
 
             if (showSteps) {
-                for (const editedTile of edited) {
+                for (const editedTile of editedTiles) {
                     editedTile.visited = true;
                     draw(editedTile.row, editedTile.column);
                 }
