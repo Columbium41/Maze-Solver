@@ -10,6 +10,6 @@ A website made with HTML, CSS, and vanilla JS that allows users to build mazes a
 - Depth-First Search
 - Breadth-First-Search
 - Randomized Prim's Algorithm for Maze Generation
-- Bidirectional Breadth-First Search
-- Reversing Linked Lists
+- Bidirectional Breadth-First Search & Reversing Linked Lists
 - Randomized Depth-First Search for Maze Generation
+- Randomized Prim's Algorithm for Maze Generation & Disjoint-Set Union Data Structure
