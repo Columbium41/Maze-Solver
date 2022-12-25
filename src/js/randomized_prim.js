@@ -6,7 +6,7 @@ import { sleep, draw, drawAll } from './script.js';
  * @param {boolean} showSteps whether to visualize the algorithm
  * @param {Number} sleepTimeMS how long to wait for each step in visualization
  */
-export default async function RandomPrim(maze, showSteps, sleepTimeMS) {
+export default async function randomizedPrim(maze, showSteps, sleepTimeMS) {
     var tileList = [];
 
     // fill all cells with walls

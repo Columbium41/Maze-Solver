@@ -3,9 +3,10 @@ import Tile from "./tile.js";
 
 import IterativeDFS from "./iterative_dfs.js";
 import BFS from "./iterative_bfs.js";
-import RandomPrim from "./randomized_prim.js";
+import randomizedPrim from "./randomized_prim.js";
 import BBFS from "./bidirectional_bfs.js";
 import randomizedDFS from "./randomized_dfs.js";
+import randomizedKruskal from "./randomized_kruskal.js";
 
 // COLORS
 const white = "rgb(220, 220, 220)";
@@ -281,7 +282,10 @@ async function startGenerate() {
 
     switch(generateAlgorithm) {
         case "random-prim":
-            await RandomPrim(maze, showSteps, sleepTimeMS);
+            await randomizedPrim(maze, showSteps, sleepTimeMS);
+            break;
+        case "random-kruskal":
+            await randomizedKruskal(maze, showSteps, sleepTimeMS);
             break;
         case "random-dfs":
             await randomizedDFS(maze, showSteps, sleepTimeMS);
