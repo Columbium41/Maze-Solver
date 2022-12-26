@@ -82,7 +82,7 @@ body {
     display: flex;
 }
 #maze-settings {
-    width: 25%;
+    width: 350px;
     background: var(--gray-theme);
     color: var(--black-theme);
     text-align: center;
@@ -124,7 +124,7 @@ select {
     padding: 3px 0;
 }
 #canvas-container {
-    width: 75%;
+    flex-grow: 1;
     height: 100%;
 }
 canvas {
