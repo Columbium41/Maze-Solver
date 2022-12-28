@@ -39,18 +39,21 @@ var showGrid = gridLinesCheckbox.checked;
 var showSteps = visualizeStepsCheckbox.checked;
 var editMode = "Start Block";
 var mouseDown = false;
-var finishedAlgorithm = false;
+var finishedSolving = false;
 const gridSize = 20;
-const numRows = Math.floor((canvasContainer.clientHeight-10) / gridSize);
-const numColumns = Math.floor((canvasContainer.clientWidth-10) / gridSize);
+var numRows;
+var numColumns;
 var sleepTimeMS = visualizationDelayRange.value;
 
-canvas.width = gridSize * numColumns;
-canvas.height = gridSize * numRows;
-canvas.style.width = `${canvas.width}px`;
-canvas.style.height = `${canvas.height}px`;
-
 var maze = new Maze(numRows, numColumns);
+var idle = true;
+
+// Add a listener to the window to resize the canvas each time the window is resized
+var resizeTimer;
+window.onresize = () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(initMaze(), 250);
+};
 
 // Add event listeners to buttons
 for (var i = 0; i < editButtons.length; i++) {
@@ -65,7 +68,7 @@ deleteAllButton.addEventListener("click", () => {  // Delete All Button
 });
 solveMazeButton.addEventListener("click", () => {  // Solve Maze Button
     startSolve();
-});
+}); 
 generateMazeButton.addEventListener("click", () => {  // Generate Button
     startGenerate();
 });
@@ -100,13 +103,38 @@ canvas.addEventListener("mousemove", (e) => {
 });
 
 /**
+ * A function which initializes a new maze
+ */
+function initMaze() {
+    const newNumRows = Math.floor((canvasContainer.clientHeight-10) / gridSize);
+    const newNumColumns = Math.floor((canvasContainer.clientWidth-10) / gridSize);
+
+    // Check if resizing the window changes the number of tiles, create a new maze if it does
+    if (idle && ((numRows === undefined || numColumns === undefined) || (numRows !== newNumRows || numColumns !== newNumColumns))) {
+        numRows = newNumRows;
+        numColumns = newNumColumns;
+
+        finishedSolving = false;
+
+        canvas.width = gridSize * numColumns;
+        canvas.height = gridSize * numRows;
+        canvas.style.width = `${canvas.width}px`;
+        canvas.style.height = `${canvas.height}px`;
+
+        maze = new Maze(numRows, numColumns);
+        enableMenu();
+        drawAll();
+    }
+}
+
+/**
  * A function that updates the maze edit mode
  * @param {PointerEvent} e The Click Event Information
  */
 function getEditMode(e) {
-    if (finishedAlgorithm) {
+    if (finishedSolving) {
         drawAll();
-        finishedAlgorithm = false;
+        finishedSolving = false;
     }
     for (var i = 0; i < buttons.length; i++) {
         if (buttons[i].hasAttribute("data-active")) {
@@ -135,9 +163,9 @@ function editMaze(row, col) {
         // Check if the tile is empty or if the user wants to delete the tile
         if (maze.matrix[row][col].type === 0 || typeNumber === 0) {
             maze.matrix[row][col].type = typeNumber;
-            if (typeNumber === 0 || finishedAlgorithm) {
+            if (typeNumber === 0 || finishedSolving) {
                 drawAll();
-                finishedAlgorithm = false;
+                finishedSolving = false;
             }
             else {
                 draw(row, col);
@@ -193,6 +221,10 @@ function drawAll() {
  * @param {Number} c 
  */
 function draw(r, c) {
+    if (!maze.tileValid(r, c)) {
+        throw new Error("Invalid Tile");
+    }
+
     const tile = maze.matrix[r][c];
 
     const x = c * gridSize;
@@ -231,17 +263,19 @@ function draw(r, c) {
  * A function that starts solving the maze based on the selected algorithm
  */
 async function startSolve() {
+    const startTile = maze.getTile(1);
+    const destinationTile = maze.getTile(2);
+
     // Check if maze contains start and destination tile
-    if (maze.getNumTileType(1) === 1 && maze.getNumTileType(2) === 1) {
-
-        const startTile = maze.getTile(1);
-        const destinationTile = maze.getTile(2);
-
+    if (startTile !== null && destinationTile !== null) {
+        
+        idle = false;
         drawAll();
         disableMenu();
-        const solveAlgorithm = solveAlgorithmSelect.value;
+        const algorithm = solveAlgorithmSelect.value;
         var solved;
-        switch (solveAlgorithm) {
+
+        switch (algorithm) {
             case "DFS":
                 solved = await IterativeDFS(maze, showSteps, startTile, destinationTile, sleepTimeMS);
                 break;
@@ -253,17 +287,17 @@ async function startSolve() {
                 break;
         }
 
-        if (solved) {
+        if (solved) {  // Maze was solved
             await reconstructPath(startTile, destinationTile);
-            drawAll();
         }
-        else {
+        else {  // Maze has no solution
             alert("Maze cannot be solved!");
         }
 
-        finishedAlgorithm = true;
+        finishedSolving = true;
         maze.resetTiles();
         enableMenu();
+        idle = true;
     }
     else {
         alert("Please put down a start and destination tile.");
@@ -274,13 +308,14 @@ async function startSolve() {
  * A function that handles generating a maze based on user input
  */
 async function startGenerate() {
-    const generateAlgorithm = generateAlgorithmSelect.value;
+    idle = false;
+    const algorithm = generateAlgorithmSelect.value;
 
     maze.clear();
     drawAll();
     disableMenu();
 
-    switch(generateAlgorithm) {
+    switch(algorithm) {
         case "random-prim":
             await randomizedPrim(maze, showSteps, sleepTimeMS);
             break;
@@ -295,6 +330,7 @@ async function startGenerate() {
     maze.resetTiles();
     drawAll();
     enableMenu();
+    idle = true;
 }
 
 /**
@@ -360,7 +396,7 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// Draw all contents
-drawAll();
+// Initialize the maze
+initMaze();
 
 export { sleep, draw, drawAll };
