@@ -342,20 +342,24 @@ async function startGenerate() {
  * @param {Tile} destination 
  */
 async function reconstructPath(start, destination) {
+    const pathDrawDelay = Math.min(sleepTimeMS, 30);
+
+    // Set the destination tile as part of the path
     var currentTile = destination;
     destination.inPath = true;
     if (showSteps) {
         draw(currentTile.row, currentTile.column);
-        await sleep(sleepTimeMS);
+        await sleep(pathDrawDelay);
     }
 
+    // Backtrack from the destination tile to the start tile
     while (!currentTile.equals(start)) {
         currentTile = maze.matrix[currentTile.parentTile.row][currentTile.parentTile.column];
         currentTile.inPath = true;
 
         if (showSteps) {
             draw(currentTile.row, currentTile.column);
-            await sleep(sleepTimeMS);
+            await sleep(pathDrawDelay);
         }
     }
 }
