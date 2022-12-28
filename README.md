@@ -8,9 +8,9 @@ A website made with HTML, CSS, and vanilla JS that allows users to build mazes a
 - Basics of JavaScript async functions
 - Vanilla JavaScript Modules
 - Depth-First Search
-- Breadth-First-Search
-- Randomized Prim's Algorithm for Maze Generation
+- Breadth-First Search
+- Randomized Prim's Algorithm for Maze Generation & Minimum Spanning Trees
 - Bidirectional Breadth-First Search & Reversing Linked Lists
 - Randomized Depth-First Search for Maze Generation
-- Randomized Prim's Algorithm for Maze Generation & Disjoint-Set Union Data Structure
+- Randomized Kruskal's Algorithm for Maze Generation & Disjoint-Set Union Data Structure
 - Aldous-Broder Algorithm for Maze Generation

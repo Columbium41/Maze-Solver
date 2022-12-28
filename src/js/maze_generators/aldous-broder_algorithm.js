@@ -63,7 +63,5 @@ export default async function aldous_broder(maze, showSteps, sleepTimeMS) {
 
         // Make the random tile the current tile
         currentTile = randomTile;
-
-        console.log(unvisitedTiles);
     }
 }
