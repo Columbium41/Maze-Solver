@@ -1,4 +1,4 @@
-import { sleep, draw, drawAll } from "./script.js";
+import { sleep, draw, drawAll } from "../script.js";
 
 export default async function randomizedKruskal(maze, showSteps, sleepTimeMS) {
     var numDistinctSets = Math.ceil(maze.rows / 2) * Math.ceil(maze.columns / 2);

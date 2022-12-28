@@ -1,4 +1,4 @@
-import { sleep, draw } from "./script.js";
+import { sleep, draw } from "../script.js";
 
 /**
  * A search function that implements Bidirectional BFS

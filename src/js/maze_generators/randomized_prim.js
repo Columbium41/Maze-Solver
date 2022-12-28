@@ -1,4 +1,4 @@
-import { sleep, draw, drawAll } from './script.js';
+import { sleep, draw, drawAll } from "../script.js";
 
 /**
  * A function that generates a maze using randomized prim's algorithm

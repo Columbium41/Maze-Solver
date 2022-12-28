@@ -1,12 +1,12 @@
-import Maze from "./maze.js";
-import Tile from "./tile.js";
+import Maze from "./classes/maze.js";
+import Tile from "./classes/tile.js";
 
-import IterativeDFS from "./iterative_dfs.js";
-import BFS from "./iterative_bfs.js";
-import randomizedPrim from "./randomized_prim.js";
-import BBFS from "./bidirectional_bfs.js";
-import randomizedDFS from "./randomized_dfs.js";
-import randomizedKruskal from "./randomized_kruskal.js";
+import IterativeDFS from "./maze_solvers/iterative_dfs.js";
+import BFS from "./maze_solvers/iterative_bfs.js";
+import randomizedPrim from "./maze_generators/randomized_prim.js";
+import BBFS from "./maze_solvers/bidirectional_bfs.js";
+import randomizedDFS from "./maze_generators/randomized_dfs.js";
+import randomizedKruskal from "./maze_generators/randomized_kruskal.js";
 
 // COLORS
 const white = "rgb(220, 220, 220)";
@@ -110,7 +110,7 @@ function initMaze() {
     const newNumColumns = Math.floor((canvasContainer.clientWidth-10) / gridSize);
 
     // Check if resizing the window changes the number of tiles, create a new maze if it does
-    if (idle && ((numRows === undefined || numColumns === undefined) || (numRows !== newNumRows || numColumns !== newNumColumns))) {
+    if (idle && ((numRows === undefined || numColumns === undefined) || (numRows !== newNumRows || numColumns !== newNumColumns))) {    
         numRows = newNumRows;
         numColumns = newNumColumns;
 
@@ -289,6 +289,9 @@ async function startSolve() {
 
         if (solved) {  // Maze was solved
             await reconstructPath(startTile, destinationTile);
+            if (!showSteps) {
+                drawAll();
+            }
         }
         else {  // Maze has no solution
             alert("Maze cannot be solved!");
