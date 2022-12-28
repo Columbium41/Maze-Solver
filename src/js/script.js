@@ -7,6 +7,7 @@ import randomizedPrim from "./maze_generators/randomized_prim.js";
 import BBFS from "./maze_solvers/bidirectional_bfs.js";
 import randomizedDFS from "./maze_generators/randomized_dfs.js";
 import randomizedKruskal from "./maze_generators/randomized_kruskal.js";
+import aldous_broder from "./maze_generators/aldous-broder_algorithm.js";
 
 // COLORS
 const white = "rgb(220, 220, 220)";
@@ -327,6 +328,9 @@ async function startGenerate() {
             break;
         case "random-dfs":
             await randomizedDFS(maze, showSteps, sleepTimeMS);
+            break;
+        case "aldous-broder":
+            await aldous_broder(maze, showSteps, sleepTimeMS);
             break;
     }
 
