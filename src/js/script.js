@@ -30,6 +30,7 @@ const solveAlgorithmSelect = document.getElementById('solve-maze-select');
 const generateMazeButton = document.getElementById('generate-button');
 const generateAlgorithmSelect = document.getElementById('generate-maze-select');
 const visualizationDelayRange = document.getElementById('visualize-delay-input');
+const gridSizeRange = document.getElementById('grid-size-input');
 
 // CANVAS
 const canvas = document.getElementById('canvas');
@@ -41,7 +42,7 @@ var showSteps = visualizeStepsCheckbox.checked;
 var editMode = "Start Block";
 var mouseDown = false;
 var finishedSolving = false;
-const gridSize = 20;
+var gridSize = 30;
 var numRows;
 var numColumns;
 var sleepTimeMS = visualizationDelayRange.value;
@@ -77,7 +78,12 @@ generateMazeButton.addEventListener("click", () => {  // Generate Button
 // Add event listeners to range input
 visualizationDelayRange.oninput = () => {
     sleepTimeMS = visualizationDelayRange.value;
-    visualizationDelayRange.previousSibling.previousSibling.innerText = `Delay: (${sleepTimeMS}ms)`;
+    visualizationDelayRange.previousSibling.previousSibling.innerText = `Delay (${sleepTimeMS}ms):`;
+};
+gridSizeRange.oninput = () => {
+    gridSize = gridSizeRange.value;
+    gridSizeRange.previousSibling.previousSibling.innerText = `Tile Size (${gridSize}px):`;
+    initMaze();
 };
 
 // Add event listeners to checkboxes
@@ -381,6 +387,7 @@ function enableMenu() {
     gridLinesCheckbox.removeAttribute('disabled');
     visualizeStepsCheckbox.removeAttribute('disabled');
     generateAlgorithmSelect.removeAttribute('disabled');
+    gridSizeRange.removeAttribute('disabled');
 }
 
 /**
@@ -396,6 +403,7 @@ function disableMenu() {
     gridLinesCheckbox.setAttribute('disabled', '');
     visualizeStepsCheckbox.setAttribute('disabled', '');
     generateAlgorithmSelect.setAttribute('disabled', '');
+    gridSizeRange.setAttribute('disabled', '');
 }
 
 /**

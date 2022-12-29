@@ -33,6 +33,10 @@
                 </div>
                 <div class="ui-container row-flex">
                     <h2>Edit</h2>
+                    <label for="grid-size-input">
+                        <article>Tile Size (30px):</article>
+                        <input type="range" value="30" min="10" max="50" id="grid-size-input">
+                    </label>
                     <button class="button edit-button" id="start-button" data-active>Start Block</button>
                     <button class="button edit-button" id="dest-button">Destination Block</button>
                     <button class="button edit-button" id="wall-button">Wall</button>
@@ -41,7 +45,6 @@
                 </div>
                 <div class="ui-container col-flex">
                     <h2>Configure</h2>
-                    <label for="generate-maze-select"></label>
                     <select name="selected-generate-algorithm" id="generate-maze-select">
                         <option value="random-prim">Randomized Prim</option>
                         <option value="random-kruskal">Randomized Kruskal</option>
@@ -49,7 +52,6 @@
                         <option value="aldous-broder">Aldous-Broder Algorithm</option>
                     </select>
                     <button class="button" id="generate-button">Generate Maze</button>
-                    <label for="solve-maze-select"></label>
                     <select name="selected-solve-algorithm" id="solve-maze-select">
                         <option value="DFS">Depth-First Search</option>
                         <option value="BFS">Breadth-First Search</option>

@@ -109,11 +109,12 @@ body {
 .ui-container h2 {
     margin-bottom: 5px;
 }
-.row-flex h2 {
+.row-flex h2,
+.row-flex label {
     flex-basis: 100%;
 }
 .checkbox,
-#visualize-delay-input {
+input[type="range"] {
     vertical-align: middle;
 }
 article {
