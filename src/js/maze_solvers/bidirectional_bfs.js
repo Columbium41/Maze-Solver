@@ -15,14 +15,10 @@ export default async function BBFS(maze, showSteps, startTile, destinationTile, 
     var searchDestination = false;
 
     // Add start and destination to their respective queues
-    startTile.checked = true;
+    // Set tiles from startTile to be visited and tiles from destinationTile to be checked (for visualization)
     startTile.visited = true;
-    startTile.distance = 0;
-    startTile.parentTile = 0;
 
     destinationTile.checked = true;
-    destinationTile.visited = true;
-    destinationTile.distance = 1;
     destinationTile.parentTile = 1;
 
     startQueue.push(startTile);
@@ -35,26 +31,23 @@ export default async function BBFS(maze, showSteps, startTile, destinationTile, 
         // Searching from Destination Tile
         if (searchDestination && destinationQueue.length > 0) { 
             currentTile = destinationQueue.shift();
-            currentTile.visited = true;
 
-            for (const adjTile of maze.getAdjacent(currentTile, 1)) {
-                if (adjTile.distance !== 1 && adjTile.type !== 3) {
-                    if (adjTile.distance === 0) {  // adjTile belongs to start path
-                        // Reconstruct path from the destination tile to the adjTile
-                        unionPaths(adjTile, currentTile, null, 1);
+            const adjTiles = maze.getAdjacent(currentTile, 1).filter((adjTile) => { return !adjTile.checked && adjTile.type !== 3 });
+            for (const adjTile of adjTiles) {
+                if (adjTile.visited) {  // adjTile belongs to start path
+                    // Reconstruct path from the destination tile to the adjTile
+                    unionPaths(adjTile, currentTile, null, 1);
 
-                        return true;
-                    }
-                    else {
-                        adjTile.parentTile = currentTile;
-                        adjTile.checked = true;
-                        adjTile.distance = 1;
-                        destinationQueue.push(adjTile);
-                    }
+                    return true;
+                }
+                else {
+                    adjTile.parentTile = currentTile;
+                    adjTile.checked = true;
+                    destinationQueue.push(adjTile);
+                }
 
-                    if (showSteps) {
-                        draw(adjTile.row, adjTile.column);
-                    }
+                if (showSteps) {
+                    draw(adjTile.row, adjTile.column);
                 }
             }
         }
@@ -62,26 +55,23 @@ export default async function BBFS(maze, showSteps, startTile, destinationTile, 
         // Searching from Start Tile
         else if (startQueue.length > 0) {
             currentTile = startQueue.shift();
-            currentTile.visited = true;
-                        
-            for (const adjTile of maze.getAdjacent(currentTile, 1)) {
-                if (adjTile.distance !== 0 && adjTile.type !== 3) {
-                    if (adjTile.distance === 1) {  // adjTile belongs to destination path
-                        // Reconstruct path from the destination tile to the adjTile
-                        unionPaths(currentTile, adjTile, null, 1);
+            
+            const adjTiles = maze.getAdjacent(currentTile, 1).filter((adjTile) => { return !adjTile.visited && adjTile.type !== 3 });
+            for (const adjTile of adjTiles) {
+                if (adjTile.checked) {  // adjTile belongs to destination path
+                    // Reconstruct path from the destination tile to the adjTile
+                    unionPaths(currentTile, adjTile, null, 1);
 
-                        return true;
-                    }
-                    else {
-                        adjTile.parentTile = currentTile;
-                        adjTile.checked = true;
-                        adjTile.distance = 0;
-                        startQueue.push(adjTile);
-                    }
+                    return true;
+                }
+                else {
+                    adjTile.parentTile = currentTile;
+                    adjTile.visited = true;
+                    startQueue.push(adjTile);
+                }
 
-                    if (showSteps) {
-                        draw(adjTile.row, adjTile.column);
-                    }
+                if (showSteps) {
+                    draw(adjTile.row, adjTile.column);
                 }
             }
         }
