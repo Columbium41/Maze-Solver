@@ -33,7 +33,7 @@ A web app made with HTML, CSS, and vanilla JS that allows users to build or gene
 ## Web App Link
 [Maze Solver](https://columbium41.github.io/Maze-Solver/)
 
-## Preview <a name="Preview"></a>
+## Preview
 ![preview-1](https://user-images.githubusercontent.com/75919484/210094884-8bf8b19f-9673-44f7-b23a-6d7a619b009b.png)
 ![preview-2](https://user-images.githubusercontent.com/75919484/210094888-275172f2-104f-4397-9b3d-ee2e613e12a8.png)
 
