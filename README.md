@@ -1,4 +1,4 @@
-# Maze Solver (WIP)
+# Maze Solver
 
 ## Table of Contents
 - [About](#About)
