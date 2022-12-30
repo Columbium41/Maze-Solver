@@ -2,21 +2,21 @@
 
 ## Table of Contents
 - [About](#About)
-- [App Features](#Features)
-- [What I Learned/Implemented](#What-I-Learned-Implemented)
+- [App Features](#App-Features)
+- [What I Learned/Implemented](#What-I-LearnedImplemented)
 - [Web App Link](#Web-App-Link)
 - [Preview](#Preview)
 
-## About <a name="About"></a>
+## About 
 A web app made with HTML, CSS, and vanilla JS that allows users to build or generate mazes and solve them with path-finding algorithms. Works on web browsers that support JavaScript and HTML Canvas. App is unsupported by devices with small screens such as smartphones.
 
-## App Features <a name="Features"></a>
+## App Features
 - Place Maze Objects & Change Maze Size
 - Visualize Pathfinding Algorithms
 - Visualize Maze Generation Algorithms
 - Modify Visualization Speed
 
-## What I Learned/Implemented <a name="What-I-Learned-Implemented"></a>
+## What I Learned/Implemented
 - HTML Canvas
 - JavaScript Async/Await
 - Vanilla JavaScript Modules
@@ -30,9 +30,10 @@ A web app made with HTML, CSS, and vanilla JS that allows users to build or gene
 - [PriorityQueue](https://www.programiz.com/dsa/priority-queue) with Binary Insertion
 - [A* Search Algorithm](https://www.geeksforgeeks.org/a-search-algorithm/)
 
-## Web App Link <a name="Web-App-Link"></a>
+## Web App Link
 [Maze Solver](https://columbium41.github.io/Maze-Solver/)
 
 ## Preview <a name="Preview"></a>
-![Maze-Solver Preview](https://user-images.githubusercontent.com/75919484/210032516-4f2941fa-0920-481d-a296-2b2af16ce71e.png)
-![Maze-Solver Preview 2](https://user-images.githubusercontent.com/75919484/210032738-6374db7a-5f5d-45fa-9d79-7e9450f7daf6.png)
+![preview-1](https://user-images.githubusercontent.com/75919484/210094884-8bf8b19f-9673-44f7-b23a-6d7a619b009b.png)
+![preview-2](https://user-images.githubusercontent.com/75919484/210094888-275172f2-104f-4397-9b3d-ee2e613e12a8.png)
+
