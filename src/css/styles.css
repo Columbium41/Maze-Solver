@@ -6,13 +6,15 @@
     --white-theme: rgb(220, 220, 220);
     --black-theme: rgb(40, 40, 40);
     --gray-theme: rgb(200, 200, 200);
+    --blue-theme: rgb(50, 190, 240);
+    --red-theme: rgb(230, 60, 60);
 }
 
 /* STYLING AND FONTS FOR WEBPAGE */
 * {
     box-sizing: border-box;
     margin: 0;
-    padding: 0;    
+    padding: 0;
 }
 html {
     font-size: 20px;
@@ -27,17 +29,16 @@ body {
 /* GENERAL CLASSES */
 .button {
     padding: 6px 8px;
-    background: var(--green-theme);
     border: 1px solid black;
     border-radius: 8px;
-    transition: background 0.2s;
+    transition: filter 0.2s;
 }
 .button:hover {
-    background: rgb(90, 220, 40);
+    filter: brightness(105%);
     cursor: pointer;
 }
 .button:active {
-    background: rgb(70, 160, 25);
+    filter: brightness(110%);
 }
 .button[data-active] {
     border: 1.5px solid red;
@@ -49,89 +50,14 @@ body {
     flex-direction: row;
 }
 
-/* STYLING FOR NAVIGATION BAR */
-#navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 100px;
-    height: 10vh;
+/* Colors */
+.green-bg {
+    background: var(--green-theme);
 }
-#title {
-    font-size: 2rem;
-    color: var(--green-theme);
+.blue-bg {
+    background: var(--blue-theme);
 }
-.links {
-    list-style: none;
-    display: flex;
-    align-items: center;
-    gap: 75px;
-}
-.links li a {
-    text-decoration: none;
-    color: inherit;
-    transition: color 0.3s;
-}
-.links li a:hover {
-    color: var(--green-theme);
+.red-bg {
+    background: var(--red-theme);
 }
 
-/* STYLING FOR MAZE INTERFACE */
-.app {
-    height: 90vh;
-    display: flex;
-}
-#maze-settings {
-    width: 350px;
-    background: var(--gray-theme);
-    color: var(--black-theme);
-    text-align: center;
-}
-.top-bar {
-    background: var(--white-theme);
-    height: 8%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-#maze-ui {
-    height: 92%;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-}
-.ui-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 3px;
-}
-.ui-container h2 {
-    margin-bottom: 5px;
-}
-.row-flex h2,
-.row-flex label {
-    flex-basis: 100%;
-}
-.checkbox,
-input[type="range"] {
-    vertical-align: middle;
-}
-article {
-    display: inline;
-}
-select {
-    text-align: inherit;
-    padding: 3px 0;
-}
-#canvas-container {
-    flex-grow: 1;
-    height: 100%;
-}
-canvas {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 3px solid var(--white-theme);
-}

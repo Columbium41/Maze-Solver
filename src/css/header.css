@@ -1,0 +1,25 @@
+#navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 100px;
+    height: 10vh;
+}
+#title {
+    font-size: 2rem;
+    color: var(--green-theme);
+}
+.links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 75px;
+}
+.links li a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.3s;
+}
+.links li a:hover {
+    color: var(--green-theme);
+}

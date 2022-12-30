@@ -5,9 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="stylesheet" href="./src/css/header.css">
+    <link rel="stylesheet" href="./src/css/app.css">
     <link rel="stylesheet" href="./src/css/styles.css">
+
     <script src="./src/js/header.js" defer></script>
     <script type="module" src="./src/js/script.js" defer></script>
+
     <title>Maze Solver</title>
 </head>
 <body>  
@@ -37,11 +41,11 @@
                         <article>Tile Size (30px):</article>
                         <input type="range" value="30" min="10" max="50" id="grid-size-input">
                     </label>
-                    <button class="button edit-button" id="start-button" data-active>Start Block</button>
-                    <button class="button edit-button" id="dest-button">Destination Block</button>
-                    <button class="button edit-button" id="wall-button">Wall</button>
-                    <button class="button edit-button" id="delete-button">Delete</button>
-                    <button class="button" id="delete-all-button">Delete All</button>
+                    <button class="button edit-button green-bg" id="start-button" data-active>Start Block</button>
+                    <button class="button edit-button green-bg" id="dest-button">Destination Block</button>
+                    <button class="button edit-button green-bg" id="wall-button">Wall</button>
+                    <button class="button edit-button green-bg" id="delete-button">Delete</button>
+                    <button class="button red-bg" id="delete-all-button">Delete All</button>
                 </div>
                 <div class="ui-container col-flex">
                     <h2>Run</h2>
@@ -51,14 +55,14 @@
                         <option value="random-dfs">Randomized Depth-First Search</option>
                         <option value="aldous-broder">Aldous-Broder Algorithm</option>
                     </select>
-                    <button class="button" id="generate-button">Generate Maze</button>
+                    <button class="button blue-bg" id="generate-button">Generate Maze</button>
                     <select name="selected-solve-algorithm" id="solve-maze-select">
                         <option value="DFS">Depth-First Search</option>
                         <option value="BFS">Breadth-First Search</option>
                         <option value="BBFS">Bidirectional Breadth-First Search</option>
                         <option value="A-star">A* Search Algorithm</option>
                     </select>
-                    <button class="button" id="solve-button">Solve Maze</button>
+                    <button class="button blue-bg" id="solve-button">Solve Maze</button>
                     <h4 id="path-length">Path Length: N/A</h4>
                 </div>
             </div>
