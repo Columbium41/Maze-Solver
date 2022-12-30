@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="https://github.com/Columbium41">
+    <meta name="description" content="A web app that lets users build and test mazes with pathfinding algorithms">
+    <meta name="keywords" content="HTML, CSS, JavaScript, Maze, Maze Solver, Maze Visualization, Pathfinding, Pathfinding Visualization, Graph Theory">
 
     <link rel="stylesheet" href="./src/css/header.css">
     <link rel="stylesheet" href="./src/css/app.css">
     <link rel="stylesheet" href="./src/css/styles.css">
+    <link rel="icon" type="png" href="./src/icon.png">
 
     <script src="./src/js/header.js" defer></script>
     <script type="module" src="./src/js/script.js" defer></script>
@@ -59,7 +63,7 @@
                     <select name="selected-solve-algorithm" id="solve-maze-select">
                         <option value="DFS">Depth-First Search</option>
                         <option value="BFS">Breadth-First Search</option>
-                        <option value="BBFS">Bidirectional Breadth-First Search</option>
+                        <option value="BBFS">Bidirectional Search</option>
                         <option value="A-star">A* Search Algorithm</option>
                     </select>
                     <button class="button blue-bg" id="solve-button">Solve Maze</button>

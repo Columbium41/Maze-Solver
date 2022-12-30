@@ -4,16 +4,72 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="https://github.com/Columbium41">
 
     <link rel="stylesheet" href="./src/css/header.css">
     <link rel="stylesheet" href="./src/css/styles.css">
     <link rel="stylesheet" href="./src/css/about.css">
+    <link rel="icon" type="png" href="./src/icon.png">
 
     <script src="./src/js/header.js" defer></script>
 
     <title>Maze Solver: About</title>
 </head>
 <body>
-    <noscript>Sorry, your browser does not support JavaScript</noscript>
+    <div class="text-body">
+        <div class="text-section">
+            <h1 class="center-text">About</h1>
+            <p>
+                Maze Solver is a web application that lets users build and generate their own mazes and visualize their solutions with 
+                pathfinding algorithms. Works on large screen devices and web browsers that support JavaScript and HTML Canvas.
+            </p>
+        </div>
+        <div class="text-section">
+            <div class="text-section">
+                <h2 class="center-text">Pathfinding Algorithms</h2>
+                <p>
+                    Pathfinding algorithms check if a path exists between two nodes on a <a target="_blank" href="http://web.cecs.pdx.edu/~sheard/course/Cs163/Doc/Graphs.html">graph</a>. 
+                    Various pathfinding algorithms will use different techniques to search the graph from a start node to a target node.
+                </p>
+            </div>
+            <div class="text-image-section">
+                <h3>Depth-First-Search (DFS)</h3>
+                <p>
+                    Depth-First Search searches every branching path in a maze one at a time until it finds the target node. 
+                    DFS typically works better if the start and target nodes are far apart.
+                    However, DFS doesn't always find the shortest path between two nodes in a maze.
+                </p>
+                <img src="https://static.javatpoint.com/tutorial/ai/images/depth-first-search.png" alt="An image of DFS on a graph">
+            </div>
+            <div class="text-image-section">
+                <h3>Breadth-First-Search (BFS)</h3>
+                <p>
+                    Breadth-First Search searches every branching path in a maze simultaneously until it finds the target node. 
+                    BFS typically works better if the start and target nodes aren't far apart.
+                    However, unlike DFS, BFS will always find the shortest path between two nodes in a maze.
+                </p>
+                <img src="https://he-s3.s3.amazonaws.com/media/uploads/fdec3c2.jpg" alt="An image of BFS on a graph">
+            </div>
+            <div class="text-image-section">
+                <h3>Bidirectional Search</h3>
+                <p>
+                    Bidirectional Search uses the same algorithm as BFS except it searches from both nodes simultaneously. 
+                    Similar to BFS, Bidirectional Search typically works better if the start and target nodes aren't far apart.
+                    Additionally, Bidirectional Search will also find the shortest path between two nodes in a maze.
+                </p>
+                <img src="https://iq.opengenus.org/content/images/2020/04/bidrnlast-1.png" alt="An image of Bidirectional Search on a graph">
+            </div>
+            <div class="text-image-section">
+                <h3>A Star Search Algorithm (A*)</h3>
+                <p>
+                    A* Search utilizes heuristic values assigned to each node to prioritize which nodes to search first.
+                    For example, nodes closer to the target node are given a higher heuristic value since they have a higher chance of leading to a valid path.
+                    However, the efficiency of A* depends on the accuracy of the hueristic values.
+                    A* will always find the shortest path between two nodes in a maze.
+                </p>
+                <img src="https://kartikkukreja.files.wordpress.com/2013/12/state-graph-terminating-condition.png" alt="An image of A* on a graph">
+            </div>
+        </div>
+    </div>
 </body>
 </html>
