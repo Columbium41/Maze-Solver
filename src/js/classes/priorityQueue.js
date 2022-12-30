@@ -63,11 +63,20 @@ class PriorityQueue {
      * @returns {QueueElement} The lowest priority element in the queue
      */
     dequeue() {
-        if (this.queue.length > 0) {
+        if (!this.isEmpty()) {
             return this.queue.shift();
         }
         return undefined;
     }
+
+    /**
+     * A method that checks if the queue is empty
+     * @returns {boolean} Whether or not the queue is empty
+     */
+    isEmpty() {
+        return (this.queue.length === 0);
+    }
+
 }
 
 export { QueueElement, PriorityQueue };

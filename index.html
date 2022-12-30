@@ -44,7 +44,7 @@
                     <button class="button" id="delete-all-button">Delete All</button>
                 </div>
                 <div class="ui-container col-flex">
-                    <h2>Configure</h2>
+                    <h2>Run</h2>
                     <select name="selected-generate-algorithm" id="generate-maze-select">
                         <option value="random-prim">Randomized Prim</option>
                         <option value="random-kruskal">Randomized Kruskal</option>
@@ -56,8 +56,10 @@
                         <option value="DFS">Depth-First Search</option>
                         <option value="BFS">Breadth-First Search</option>
                         <option value="BBFS">Bidirectional Breadth-First Search</option>
+                        <option value="A-star">A* Search Algorithm</option>
                     </select>
                     <button class="button" id="solve-button">Solve Maze</button>
+                    <h4 id="path-length">Path Length: N/A</h4>
                 </div>
             </div>
         </div>

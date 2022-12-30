@@ -8,6 +8,7 @@ import BBFS from "./maze_solvers/bidirectional_bfs.js";
 import randomizedDFS from "./maze_generators/randomized_dfs.js";
 import randomizedKruskal from "./maze_generators/randomized_kruskal.js";
 import aldous_broder from "./maze_generators/aldous-broder_algorithm.js";
+import A_star from "./maze_solvers/A_star.js";
 
 // COLORS
 const white = "rgb(220, 220, 220)";
@@ -31,6 +32,7 @@ const generateMazeButton = document.getElementById('generate-button');
 const generateAlgorithmSelect = document.getElementById('generate-maze-select');
 const visualizationDelayRange = document.getElementById('visualize-delay-input');
 const gridSizeRange = document.getElementById('grid-size-input');
+const pathLengthLabel = document.getElementById('path-length');
 
 // CANVAS
 const canvas = document.getElementById('canvas');
@@ -127,6 +129,7 @@ function initMaze() {
         canvas.height = gridSize * numRows;
         canvas.style.width = `${canvas.width}px`;
         canvas.style.height = `${canvas.height}px`;
+        pathLengthLabel.innerText = `Path Length: N/A`;
 
         maze = new Maze(numRows, numColumns);
         enableMenu();
@@ -140,6 +143,7 @@ function initMaze() {
  */
 function getEditMode(e) {
     if (finishedSolving) {
+        pathLengthLabel.innerText = `Path Length: N/A`;
         drawAll();
         finishedSolving = false;
     }
@@ -171,6 +175,7 @@ function editMaze(row, col) {
         if (maze.matrix[row][col].type === 0 || typeNumber === 0) {
             maze.matrix[row][col].type = typeNumber;
             if (typeNumber === 0 || finishedSolving) {
+                pathLengthLabel.innerText = `Path Length: N/A`;
                 drawAll();
                 finishedSolving = false;
             }
@@ -292,15 +297,20 @@ async function startSolve() {
             case "BBFS":
                 solved = await BBFS(maze, showSteps, startTile, destinationTile, sleepTimeMS);
                 break;
+            case "A-star":
+                solved = await A_star(maze, showSteps, startTile, destinationTile, sleepTimeMS);
+                break;
         }
 
         if (solved) {  // Maze was solved
-            await reconstructPath(startTile, destinationTile);
+            const pathLength = await reconstructPath(startTile, destinationTile);
+            pathLengthLabel.innerText = `Path Length: ${pathLength}`;
             if (!showSteps) {
                 drawAll();
             }
         }
         else {  // Maze has no solution
+            pathLengthLabel.innerText = `Path Length: N/A`;
             alert("Maze cannot be solved!");
         }
 
@@ -348,11 +358,13 @@ async function startGenerate() {
 
 /**
  * A function that reconstructs the path from the start to destination tile
- * @param {Tile} start 
- * @param {Tile} destination 
+ * @param {Tile} start The start tile in the maze
+ * @param {Tile} destination The destination tile in the maze
+ * @returns {Number} The path length
  */
 async function reconstructPath(start, destination) {
     const pathDrawDelay = Math.min(sleepTimeMS, 30);
+    var count = 0;
 
     // Set the destination tile as part of the path
     var currentTile = destination;
@@ -371,7 +383,10 @@ async function reconstructPath(start, destination) {
             draw(currentTile.row, currentTile.column);
             await sleep(pathDrawDelay);
         }
+        count++;
     }
+
+    return count;
 }
 
 /**

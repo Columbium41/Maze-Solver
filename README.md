@@ -12,9 +12,10 @@ A website made with HTML, CSS, and vanilla JS that allows users to build mazes a
 - Randomized Prim's Algorithm for Maze Generation & Minimum Spanning Trees
 - Bidirectional Breadth-First Search & Reversing Linked Lists
 - Randomized Depth-First Search for Maze Generation
-- Randomized Kruskal's Algorithm for Maze Generation & Disjoint-Set Union Data Structure
+- Randomized Kruskal's Algorithm for Maze Generation & Disjoint-Set Union
 - Aldous-Broder Algorithm for Maze Generation
 - PriorityQueue with Binary Insertion
+- A* Search Algorithm
 
 # Web App Link
 [Maze Solver](https://columbium41.github.io/Maze-Solver/)
