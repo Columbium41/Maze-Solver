@@ -52,6 +52,23 @@ a:active {
 }
 .text-image-section img {
     width: 40%;
+    height: 100%;
     border-radius: 5px;
+    object-fit: contain;
+}
+
+@media screen and (max-width: 800px) {
+    .text-image-section p {
+        margin-bottom: 10px;
+        width: 100%;
+    }
+    .text-image-section img {
+        width: 100%;
+    }
+}
+@media screen and (min-width: 801px) and (max-width: 1000px) {
+    .text-body {
+        width: 70%;
+    }
 }
 
