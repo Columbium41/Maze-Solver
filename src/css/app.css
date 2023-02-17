@@ -89,6 +89,7 @@ canvas {
         height: 30px;
         background: white;
         padding: 5px;
+        border-radius: 2px;
     }
 }
 @media only screen and (max-width: 500px) {
