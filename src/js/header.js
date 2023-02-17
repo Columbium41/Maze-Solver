@@ -2,6 +2,7 @@ const template = document.createElement('template');
 
 template.innerHTML = `
 <nav id="navbar">
+    <img src="/src/menu-icon.svg" alt="Menu Button" id="menu-button" />
     <h1 id="title">Maze Solver</h1>
     <ul class="links">
         <li><a href="./index.html">Home</a></li>

@@ -19,6 +19,7 @@ const yellow = "rgb(230, 200, 40)";
 const purple = "rgb(150, 15, 175)";
 
 // DOCUMENT ELEMENTS
+const mazeSettings = document.getElementById('maze-settings');
 const canvasContainer = document.getElementById('canvas-container');
 
 const gridLinesCheckbox = document.getElementById('show-grid');
@@ -33,6 +34,7 @@ const generateAlgorithmSelect = document.getElementById('generate-maze-select');
 const visualizationDelayRange = document.getElementById('visualize-delay-input');
 const gridSizeRange = document.getElementById('grid-size-input');
 const pathLengthLabel = document.getElementById('path-length');
+const menuButton = document.getElementById('menu-button');
 
 // CANVAS
 const canvas = document.getElementById('canvas');
@@ -48,9 +50,20 @@ var gridSize = 30;
 var numRows;
 var numColumns;
 var sleepTimeMS = visualizationDelayRange.value;
+var menuOpened = false;
 
 var maze = new Maze(numRows, numColumns);
 var idle = true;
+
+menuButton.onclick = () => {
+    menuOpened = !menuOpened;
+    if (menuOpened) {
+        mazeSettings.style.transform = "translateX(0%)";
+    }
+    else {
+        mazeSettings.style.transform = "translateX(-100%)";
+    }
+}
 
 // Add a listener to the window to resize the canvas each time the window is resized
 var resizeTimer;

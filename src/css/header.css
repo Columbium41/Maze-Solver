@@ -23,3 +23,6 @@
 .links li a:hover {
     color: var(--green-theme);
 }
+#menu-button {
+    display: none;
+}

@@ -56,3 +56,46 @@ canvas {
     transform: translate(-50%, -50%);
     border: 3px solid var(--white-theme);
 }
+
+
+@media only screen and (max-width: 800px) {
+    html {
+        font-size: 18px;
+    }
+    #navbar {
+        padding: 0 20px;
+        font-size: 0.75rem;
+    }
+    .links {
+        gap: 30px;
+    }
+    #maze-settings {
+        width: 350px;
+        position: absolute;
+        top: 10vh;
+        left: 0;
+        height: calc(100% - 10vh);
+        transform: translateX(-100%);
+        transition: transform 0.25s ease-in;
+        z-index: 1;
+    }
+    #canvas-container {
+        width: 100%;
+    }
+    #menu-button {
+        display: block;
+        object-fit: cover;
+        width: 30px;
+        height: 30px;
+        background: white;
+        padding: 5px;
+    }
+}
+@media only screen and (max-width: 500px) {
+    #maze-settings {
+        width: 250px;
+    }
+    .links {
+        display: none;
+    }
+}
