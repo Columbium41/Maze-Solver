@@ -58,10 +58,10 @@ var idle = true;
 menuButton.onclick = () => {
     menuOpened = !menuOpened;
     if (menuOpened) {
-        mazeSettings.style.transform = "translateX(0%)";
+        mazeSettings.setAttribute("open", "true");
     }
     else {
-        mazeSettings.style.transform = "translateX(-100%)";
+        mazeSettings.setAttribute("open", "false");
     }
 }
 
@@ -143,6 +143,15 @@ function initMaze() {
         canvas.style.width = `${canvas.width}px`;
         canvas.style.height = `${canvas.height}px`;
         pathLengthLabel.innerText = `Path Length: N/A`;
+
+        if (window.innerWidth <= 800) {
+            mazeSettings.setAttribute("open", "false");
+            menuOpened = false;
+        }
+        else {
+            mazeSettings.setAttribute("open", "true");
+            menuOpened = true;
+        }
 
         maze = new Maze(numRows, numColumns);
         enableMenu();

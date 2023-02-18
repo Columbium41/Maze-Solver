@@ -8,6 +8,12 @@
     color: var(--black-theme);
     text-align: center;
 }
+#maze-settings[open="true"] {
+    transform: translateX(0%);
+}
+#maze-settings[open="false"] {
+    transform: translateX(-100%);
+}
 .top-bar {
     background: var(--white-theme);
     height: 8%;
@@ -75,7 +81,6 @@ canvas {
         top: 10vh;
         left: 0;
         height: calc(100% - 10vh);
-        transform: translateX(-100%);
         transition: transform 0.25s ease-in;
         z-index: 1;
     }
