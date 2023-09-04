@@ -96,8 +96,14 @@ visualizationDelayRange.oninput = () => {
     visualizationDelayRange.previousSibling.previousSibling.innerText = `Delay (${sleepTimeMS}ms):`;
 };
 gridSizeRange.oninput = () => {
+    gridSizeRange.previousSibling.previousSibling.innerText = `Tile Size (${gridSizeRange.value}px):`;
+};
+gridSizeRange.onmouseup = () => {
     gridSize = gridSizeRange.value;
-    gridSizeRange.previousSibling.previousSibling.innerText = `Tile Size (${gridSize}px):`;
+    initMaze();
+};
+gridSizeRange.ontouchend = () => {
+    gridSize = gridSizeRange.value;
     initMaze();
 };
 
