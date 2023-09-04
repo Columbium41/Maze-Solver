@@ -303,6 +303,11 @@ function draw(r, c) {
  * A function that starts solving the maze based on the selected algorithm
  */
 async function startSolve() {
+    if (window.innerWidth <= 800) {
+        mazeSettings.setAttribute("open", "false");
+        menuOpened = false;
+    }
+
     const startTile = maze.getTile(1);
     const destinationTile = maze.getTile(2);
 
@@ -356,6 +361,11 @@ async function startSolve() {
  * A function that handles generating a maze based on user input
  */
 async function startGenerate() {
+    if (window.innerWidth <= 800) {
+        mazeSettings.setAttribute("open", "false");
+        menuOpened = false;
+    }
+
     idle = false;
     const algorithm = generateAlgorithmSelect.value;
 

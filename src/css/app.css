@@ -96,6 +96,12 @@ canvas {
         padding: 5px;
         border-radius: 2px;
     }
+    label[for="visualize-delay-input"],
+    label[for="grid-size-input"] {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 }
 @media only screen and (max-width: 500px) {
     #maze-settings {
